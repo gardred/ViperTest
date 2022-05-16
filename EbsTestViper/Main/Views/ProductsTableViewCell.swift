@@ -34,16 +34,14 @@ class ProductsTableViewCell: UITableViewCell {
   }
   
   @objc func changeFavButton() {
-    favButton.setImage(UIImage(systemName: "heart"), for: .normal)
+    favButton.isSelected = false
     favButton.backgroundColor = .white
   }
   
   @IBAction func favoriteButtonTap(_ sender: UIButton) {
-    
       addToFavoriteProduct()
       favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
       favButton.isSelected = true
-    
   }
   
   @IBAction func removeFavoriteProduct(_ sender: UIButton) {
