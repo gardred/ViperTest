@@ -10,11 +10,11 @@ import RealmSwift
 
 class RealmService {
   static let shared = RealmService()
-  let realm = try! Realm()
+  let realm = try? Realm()
 
-  func addProduct(name: String, icon: String, details:String, price: Int, id: Int) {
+  func addProduct(name: String, icon: String, details: String, price: Int, id: Int) {
     do {
-      try! realm.write {
+      try? realm?.write {
         let favorites = FavoriteList()
         favorites.id = id
         favorites.name = name
@@ -22,7 +22,7 @@ class RealmService {
         favorites.details = details
         favorites.price = price
         favorites.salePrice = price
-        realm.add(favorites)
+        realm?.add(favorites)
       }
     } catch let error {
       print(error.localizedDescription)
@@ -32,12 +32,12 @@ class RealmService {
   
   func removeProduct(productToDelete: FavoriteList) {
     do {
-      try! self.realm.write({
-        self.realm.delete(productToDelete)
+      try? self.realm?.write({
+        self.realm?.delete(productToDelete)
       })
     } catch {
       return
     }
   }
+  
 }
-

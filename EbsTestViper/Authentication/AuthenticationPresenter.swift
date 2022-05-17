@@ -27,7 +27,7 @@ class AuthenticationPresenter: AuthenticationPresenterProtocol {
   var router: AuthentiocationRouterProtocol?
   
   func loginWithGoogle() {
-    GIDSignIn.sharedInstance.signIn(with: signInConfig, presenting: AuthenticationView()) { user, error in
+    GIDSignIn.sharedInstance.signIn(with: signInConfig, presenting: AuthenticationView()) { _, error in
         guard error == nil else { return }
     }
   }
@@ -38,7 +38,7 @@ class AuthenticationPresenter: AuthenticationPresenterProtocol {
       let token = token.tokenString
       
       let request = FBSDKCoreKit.GraphRequest(graphPath: "me", parameters: ["fields": "email , name"], tokenString: token, version: nil, httpMethod: .get)
-      request.start(completion: { connection , result , error in
+      request.start(completion: { _, _, _ in
         
       })
     } else {

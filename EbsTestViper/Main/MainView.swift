@@ -13,26 +13,31 @@ protocol MainViewProtocol {
   var presenter: MainPresenterProtocol? { get set }
   var isFetchingData: Bool { get set }
   
-  func fetchProductsSuccess(productsArray : [Products])
+  func fetchProductsSuccess(productsArray: [Products])
   func fetchProductsError()
   func checkNetworkConnection()
 }
 
-class MainViewController: BaseViewController , MainViewProtocol {
-  let realm = try! Realm()
-  
-  
+class MainViewController: BaseViewController, MainViewProtocol {
+  let realm = try? Realm()
   var presenter: MainPresenterProtocol?
+  var favoriteList: Results<FavoriteList>!
   // UIElements
-  @IBOutlet weak var productsTableView : UITableView!
+  @IBOutlet weak var productsTableView: UITableView!
   @IBOutlet weak var cartView: UIView!
   @IBOutlet weak var cartCountLabel: UILabel!
   private let refreshControl = UIRefreshControl()
   // Variables
   var isFetchingData = false
   private var products: [Products] = [Products]()
-  private var singleProduct : Products!
+  private var singleProduct: Products!
   // Lifecycle
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    productsTableView.reloadData()
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -47,10 +52,9 @@ class MainViewController: BaseViewController , MainViewProtocol {
     
     refreshControl.addTarget(self, action: #selector(pullUpRefreshControl), for: .valueChanged)
     
-    print("Realm url :\(Realm.Configuration.defaultConfiguration.fileURL)")
   }
   
-  //Get product list
+  // Get product list
   func fetchProductsSuccess(productsArray: [Products]) {
     products = productsArray
     DispatchQueue.main.async { [weak self] in
@@ -93,36 +97,44 @@ class MainViewController: BaseViewController , MainViewProtocol {
   }
 }
 
-extension MainViewController : UITableViewDelegate , UITableViewDataSource {
+extension MainViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return products.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = productsTableView.dequeueReusableCell(withIdentifier: ProductsTableViewCell.identifier, for: indexPath) as? ProductsTableViewCell else { return UITableViewCell() }
+    guard let cell = productsTableView.dequeueReusableCell(withIdentifier: ProductsTableViewCell.identifier, for: indexPath) as? ProductsTableViewCell else {return UITableViewCell()}
     cell.selectionStyle = .none
     let product = products[indexPath.row]
     
-    let contains = realm.objects(FavoriteList.self).contains{ favoriteObject in
+    let contains = realm?.objects(FavoriteList.self).contains { favoriteObject in
       if favoriteObject.id == product.id {
         cell.favButton.isSelected = true
         cell.favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
       }
       return false
     }
-    
-    cell.configure(with: product, isFavorite: contains)
-    
-    
+    cell.configure(with: product, isFavorite: contains!)
+   
     cell.addToFavoriteProduct = {
-      RealmService.shared.addProduct(name: product.name,
-                                     icon: product.main_image,
-                                     details: product.details,
-                                     price: product.price,
-                                     id: product.id)
+      if cell.favButton.isSelected == false {
+        RealmService.shared.addProduct(name: product.name,
+                                       icon: product.main_image,
+                                       details: product.details,
+                                       price: product.price,
+                                       id: product.id)
+      } else {
+        cell.favButton.backgroundColor = .white
+        cell.favButton.isSelected = false
+        let configure = self.realm?.objects(FavoriteList.self).contains { favoriteObject in
+          if favoriteObject.id == product.id {
+            RealmService.shared.removeProduct(productToDelete: favoriteObject)
+            self.productsTableView.reloadData()
+          }
+          return false
+      }
     }
-    
-    
+  }
     return cell
   }
   
@@ -133,11 +145,10 @@ extension MainViewController : UITableViewDelegate , UITableViewDataSource {
   func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
     let lastProduct = products.count - 1
     if indexPath.row == lastProduct && !isFetchingData {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 2 , execute: { [weak self] in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { [weak self] in
         self?.isFetchingData = true
         self?.presenter?.startFetchingProducts()
       })
     }
   }
 }
-

@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 // Router ------> Presenter
 protocol MainRouterProtocol {
   static func start() -> MainViewController
@@ -24,22 +23,18 @@ class MainRouter: MainRouterProtocol {
     navigationController.pushViewController(authentication, animated: true)
   }
   
- 
   func pushFavoriteScreen(navigationController: UINavigationController) {
     let router = FavoriteRouter.self
     let favorite = router.createFavoriteModule()
     navigationController.pushViewController(favorite, animated: true)
   }
   
- 
   func pushDetailsScreen(navigationController: UINavigationController, productId: Int) {
     let router = DetailsRouter.self
     let details = router.createDetailsModule()
     details.presenter?.setup(productId: productId)
     navigationController.pushViewController(details, animated: true)
   }
-  
-  
   
   static func start() -> MainViewController {
     

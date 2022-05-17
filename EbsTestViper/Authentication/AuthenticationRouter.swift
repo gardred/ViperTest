@@ -32,6 +32,4 @@ class AuthentiocationRouter: AuthentiocationRouterProtocol {
     
     return view
   }
-  
-  
 }

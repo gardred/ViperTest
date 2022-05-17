@@ -27,14 +27,13 @@ protocol MainPresenterProtocol {
   func startFetchingProducts()
   func fetchProductsSuccess(products: [Products])
 
-  
   func pushDetailsViewController(navigationController: UINavigationController, productId: Int)
   func pushFavoriteViewController(navigationController: UINavigationController)
   func pushAuthentiocationViewController(navigationController: UINavigationController)
   
   func startMonitoring()
   func stopMonitoring()
-  func getConnectionType(_ path : NWPath)
+  func getConnectionType(_ path: NWPath)
   func checkForNetwork()
 }
 
@@ -87,10 +86,6 @@ class MainPresenter: MainPresenterProtocol {
     router?.pushDetailsScreen(navigationController: navigationController, productId: productId )
   }
   
- 
-
-
-  
   func startMonitoring() {
     monitor.start(queue: DispatchQueue.global())
     monitor.pathUpdateHandler = { [weak self] path in
@@ -116,9 +111,9 @@ class MainPresenter: MainPresenterProtocol {
   }
   func checkForNetwork() {
     if isConnected == false {
-      print("Connected")
+      
     } else {
-      print("No connection")
+      
       let alert = UIAlertController(title: "Failure", message: "You are not connected to the internet", preferredStyle: .alert)
       let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
       alert.addAction(cancelAction)

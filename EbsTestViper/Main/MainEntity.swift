@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct ProductsResponse: Codable {
     let results: [Products]
 }
@@ -30,4 +29,3 @@ enum ConnectionType {
     case ethernet
     case unknown
 }
-

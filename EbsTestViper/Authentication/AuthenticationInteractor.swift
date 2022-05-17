@@ -13,6 +13,4 @@ protocol AuthenticationInteractorProtocol {
 
 class AuthenticationInteractor: AuthenticationInteractorProtocol {
   var presenter: AuthenticationPresenterProtocol?
-  
-  
 }

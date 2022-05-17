@@ -1,4 +1,3 @@
-
 // AppDelegate.swift
 import UIKit
 import FBSDKCoreKit
@@ -7,11 +6,9 @@ import RealmSwift
 
 @UIApplicationMain
 
-class AppDelegate: UIResponder, UIApplicationDelegate{
-  
-  
+class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    //Google
+    // Google
     GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
       if error != nil || user == nil {
         
@@ -20,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
       }
     }
     
-    //Facebook auth
+    // Facebook auth
     ApplicationDelegate.shared.application(
       application,
       didFinishLaunchingWithOptions: launchOptions
@@ -29,15 +26,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     return true
   }
   
-  func application(_ app: UIApplication,open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    var handled : Bool
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    var handled: Bool
     
     handled = GIDSignIn.sharedInstance.handle(url)
     if handled {
       return true
     }
     
-    //Facebook
+    // Facebook
     ApplicationDelegate.shared.application(
       app,
       open: url,
@@ -48,4 +45,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
     return false
   }
 }
-
