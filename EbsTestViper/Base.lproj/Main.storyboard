@@ -33,7 +33,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iT0-xS-QnE">
-                                            <rect key="frame" x="15" y="21" width="93.666666666666671" height="18"/>
+                                            <rect key="frame" x="15" y="21" width="94" height="18"/>
                                             <state key="normal" title="Button"/>
                                             <buttonConfiguration key="configuration" style="plain" image="Filters" title=""/>
                                         </button>
@@ -67,7 +67,7 @@
                                 <rect key="frame" x="15" y="832" width="398" height="41"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rro-tF-ppZ">
-                                        <rect key="frame" x="149.66666666666666" y="3.6666666666666288" width="99" height="34"/>
+                                        <rect key="frame" x="149.66666666666666" y="2" width="99" height="37.333333333333336"/>
                                         <color key="backgroundColor" red="0.46666666670000001" green="0.25098039220000001" blue="0.63529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="MY CART">
@@ -250,26 +250,26 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FAVORITES" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aJx-oO-uZ9">
-                                            <rect key="frame" x="15.000000000000007" y="15" width="105.66666666666669" height="30"/>
+                                            <rect key="frame" x="15" y="15" width="110" height="30"/>
                                             <fontDescription key="fontDescription" name="OpenSans-ExtraBold" family="Open Sans" pointSize="20"/>
                                             <color key="textColor" red="0.094117647060000004" green="0.15686274510000001" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SORT BY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5mU-R3-lyI">
-                                            <rect key="frame" x="301" y="20" width="68.333333333333314" height="19"/>
+                                            <rect key="frame" x="302.66666666666669" y="20" width="66.333333333333314" height="19"/>
                                             <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="16"/>
                                             <color key="textColor" red="0.094117647060000004" green="0.15686274510000001" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pvt-CL-yjf">
-                                            <rect key="frame" x="369.33333333333331" y="26" width="43.666666666666686" height="7"/>
+                                            <rect key="frame" x="369" y="26" width="44" height="7"/>
                                             <state key="normal" title="Button"/>
                                             <buttonConfiguration key="configuration" style="plain" image="chevron.down" catalog="system" title="">
                                                 <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </buttonConfiguration>
                                         </button>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJ5-39-rSm">
-                                            <rect key="frame" x="132.66666666666666" y="22" width="19" height="19"/>
+                                            <rect key="frame" x="137" y="22" width="19" height="19"/>
                                             <color key="backgroundColor" red="0.89019607840000003" green="0.27058823529999998" blue="0.2274509804" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="19" id="29W-6g-H22"/>

@@ -15,6 +15,8 @@ protocol MainInteractorProtocol {
   var presenter: MainPresenterProtocol? { get set }
   
   func getProducts(atPage page: Int, completion: @escaping (Result<[Products], Error >) -> Void)
+  func downloadImage(url: URL, completion: @escaping (UIImage?) -> Void)
+  func getData(from url: URL, completion: @escaping(Data?, URLResponse?, Error?) -> Void)
 }
 
 class MainInteractor: MainInteractorProtocol {
@@ -29,21 +31,31 @@ class MainInteractor: MainInteractorProtocol {
   func getProducts(atPage page: Int, completion: @escaping (Result<[Products], Error>) -> Void) {
     guard let url = URL(string: "\(Constansts.baseURL)?page=\(page)&page_size=10") else { return }
     let dataTask = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
-      guard let data = data, error == nil else {
+      guard let data = data else {
         return
       }
       do {
-        let results = try JSONDecoder().decode(ProductsResponse.self, from: data)
-        self.presenter?.fetchProductsSuccess(products: results.results)
-        completion(.success(results.results))
+        if error == nil {
+          let results = try JSONDecoder().decode(ProductsResponse.self, from: data)
+          self.presenter?.fetchProductsSuccess(products: results.results)
+          completion(.success(results.results))
+        } else {
+          completion(.failure(APIError.failedToGetData))
+          self.presenter?.view?.checkNetworkConnection()
+        }
       } catch {
-        completion(.failure(APIError.failedToGetData))
+          completion(.failure(APIError.failedToGetData))
+          self.presenter?.view?.checkNetworkConnection()
       }
     }
     dataTask.resume()
   }
-  
   // Cache images
+  
+  func getData(from url: URL, completion: @escaping(Data?, URLResponse?, Error?) -> Void) {
+    URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+  }
+  
   func downloadImage(url: URL, completion: @escaping (UIImage?) -> Void) {
     if let cachedImage = imageCache.object(forKey: url.absoluteString  as NSString) {
       completion(cachedImage)
@@ -68,3 +80,4 @@ class MainInteractor: MainInteractorProtocol {
     
   }
 }
+

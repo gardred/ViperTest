@@ -39,23 +39,22 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="VIW-km-reu">
                                 <rect key="frame" x="0.0" y="310.5" width="345" height="19.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHw-LF-Bkd">
-                                        <rect key="frame" x="123" y="0.0" width="42.5" height="19.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHw-LF-Bkd">
+                                        <rect key="frame" x="0.0" y="0.0" width="180" height="19.5"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="180" id="Bnc-TL-yMg"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <color key="textColor" red="0.01176470588" green="0.35294117650000001" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MRd-f4-3aR">
-                                        <rect key="frame" x="177.5" y="0.0" width="33" height="19.5"/>
+                                        <rect key="frame" x="192" y="0.0" width="153" height="19.5"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         <color key="textColor" red="0.61176470589999998" green="0.69411764710000001" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="zHw-LF-Bkd" firstAttribute="leading" secondItem="VIW-km-reu" secondAttribute="leading" constant="123" id="dbQ-TZ-Q8Q"/>
-                                    <constraint firstAttribute="trailing" secondItem="MRd-f4-3aR" secondAttribute="trailing" constant="123" id="x1p-fT-2Bg"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <constraints>

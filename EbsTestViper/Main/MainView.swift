@@ -8,41 +8,45 @@
 import Foundation
 import UIKit
 import RealmSwift
+import Network
 // View <------> Presenter
 protocol MainViewProtocol {
   var presenter: MainPresenterProtocol? { get set }
   var isFetchingData: Bool { get set }
+  var singleProduct: Products! { get set }
   
   func fetchProductsSuccess(productsArray: [Products])
-  func fetchProductsError()
   func checkNetworkConnection()
 }
 
 class MainViewController: BaseViewController, MainViewProtocol {
-  let realm = try? Realm()
-  var presenter: MainPresenterProtocol?
-  var favoriteList: Results<FavoriteList>!
+
   // UIElements
   @IBOutlet weak var productsTableView: UITableView!
   @IBOutlet weak var cartView: UIView!
   @IBOutlet weak var cartCountLabel: UILabel!
   private let refreshControl = UIRefreshControl()
+  
   // Variables
   var isFetchingData = false
   private var products: [Products] = [Products]()
-  private var singleProduct: Products!
+  var singleProduct: Products!
+  let realm = try? Realm()
+  var presenter: MainPresenterProtocol?
+  var favoriteList: Results<FavoriteList>!
+  let monitor = NWPathMonitor()
   // Lifecycle
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     productsTableView.reloadData()
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    presenter?.startFetchingProducts()
     checkNetworkConnection()
+    downloadImage()
+    presenter?.startFetchingProducts()
+    
     setupNavigationBar()
     
     productsTableView.register(ProductsTableViewCell.nib(), forCellReuseIdentifier: ProductsTableViewCell.identifier)
@@ -78,12 +82,6 @@ class MainViewController: BaseViewController, MainViewProtocol {
     presenter?.pushAuthentiocationViewController(navigationController: navigationController!)
   }
   
-  func fetchProductsError() {
-    let alert = UIAlertController(title: "Alert", message: "Problem Fetching Products", preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
-    self.present(alert, animated: true, completion: nil)
-  }
-  
   @objc func pullUpRefreshControl(_ sender: UIRefreshControl) {
     presenter?.products.removeAll()
     presenter?.current_page = 1
@@ -93,7 +91,29 @@ class MainViewController: BaseViewController, MainViewProtocol {
   }
   
   func checkNetworkConnection() {
-    presenter?.checkForNetwork()
+    monitor.pathUpdateHandler = { pathUpdateHandler in
+      if pathUpdateHandler.status == .satisfied {
+        DispatchQueue.main.async {
+          let alert = UIAlertController(title: "Success", message: "", preferredStyle: .alert)
+          let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+          alert.addAction(cancel)
+          self.present(alert, animated: true)
+        }
+      } else {
+        DispatchQueue.main.async {
+          let alert = UIAlertController(title: "Error", message: "No internet", preferredStyle: .alert)
+          let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+          alert.addAction(cancel)
+          self.present(alert, animated: true)
+        }
+      }
+    }
+    monitor.start(queue: DispatchQueue.global())
+  }
+  
+  func downloadImage() {
+    let url = URL(string: Constansts.baseURL)!
+    presenter?.asynchronouslyDownloadImages(from: url)
   }
 }
 
@@ -104,37 +124,15 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = productsTableView.dequeueReusableCell(withIdentifier: ProductsTableViewCell.identifier, for: indexPath) as? ProductsTableViewCell else {return UITableViewCell()}
-    cell.selectionStyle = .none
     let product = products[indexPath.row]
-    
-    let contains = realm?.objects(FavoriteList.self).contains { favoriteObject in
-      if favoriteObject.id == product.id {
-        cell.favButton.isSelected = true
-        cell.favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
-      }
-      return false
-    }
-    cell.configure(with: product, isFavorite: contains!)
-   
-    cell.addToFavoriteProduct = {
+    cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product))
+    cell.addToFavoriteProduct = {[weak self] (id) in
       if cell.favButton.isSelected == false {
-        RealmService.shared.addProduct(name: product.name,
-                                       icon: product.main_image,
-                                       details: product.details,
-                                       price: product.price,
-                                       id: product.id)
+        self?.presenter?.toggleFavorite(id: id)
       } else {
-        cell.favButton.backgroundColor = .white
-        cell.favButton.isSelected = false
-        let configure = self.realm?.objects(FavoriteList.self).contains { favoriteObject in
-          if favoriteObject.id == product.id {
-            RealmService.shared.removeProduct(productToDelete: favoriteObject)
-            self.productsTableView.reloadData()
-          }
-          return false
+        RealmService.shared.deleteElement(products: product)
       }
     }
-  }
     return cell
   }
   

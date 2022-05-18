@@ -24,7 +24,6 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
   var presenter: DetailsPresenterProtocol?
   let realm = try? Realm()
   var favoriteList: Results<FavoriteList>!
-  var cell: ProductsTableViewCell?
   // UIElements
   @IBOutlet weak var productDetails: UITableView!
   var cells: [CellType] = []
@@ -59,17 +58,12 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
   }
   @objc func added() {
     navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
-    RealmService.shared.addProduct(name: products.name, icon: products.main_image, details: products.details, price: products.price, id: products.id)
+    RealmService.shared.addProduct(with: products!)
   }
   
   @objc func removed() {
     navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
-    let contains = realm?.objects(FavoriteList.self).contains { favoriteObject in
-      if favoriteObject.id == presenter?.id {
-        RealmService.shared.removeProduct(productToDelete: favoriteObject)
-      }
-      return false
-    }
+    RealmService.shared.deleteElement(products: products)
   }
   
   func getSingleProductSuccess(singleProduct: Products) {

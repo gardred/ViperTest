@@ -119,7 +119,6 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="favoriteButtonTap:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="53W-qK-ySa"/>
-                                            <action selector="removeFavoriteProduct:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="cKQ-5J-QWf"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8uB-y8-XU1">

@@ -40,24 +40,17 @@ class FavoriteView: BaseViewController, FavoriteViewProtocol {
       switch changes {
       case .initial:
         tableView.reloadData()
-        
       case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
         tableView.performBatchUpdates {
-          
           tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
-          
           tableView.insertRows(at: insertions.map({IndexPath(row: $0, section: 0)}), with: .automatic)
-          
           tableView.reloadRows(at: modifications.map({IndexPath(row: $0, section: 0)}), with: .automatic)
-          
         } completion: { finished in
           
         }
-        
       case .error: break
       }
     })
-    
     favoriteProductsTableView.reloadData()
   }
   
@@ -82,7 +75,7 @@ extension FavoriteView: UITableViewDelegate, UITableViewDataSource {
     cell.favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
     cell.favButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
     cell.configureFavoriteProduct(with: favoriteList[indexPath.row])
-    cell.removeFavoriteProduct = { [weak self] in
+    cell.addToFavoriteProduct = { [weak self] (id) in
       guard let self = self else { return}
       RealmService.shared.removeProduct(productToDelete: product)
       self.favoriteProductsCount.text = "\(self.favoriteList.count)"

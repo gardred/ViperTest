@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import RealmSwift
 class ProductsTableViewCell: UITableViewCell {
   
   static let identifier = "ProductsTableViewCell"
@@ -19,38 +19,43 @@ class ProductsTableViewCell: UITableViewCell {
   @IBOutlet weak var favButton: UIButton!
   @IBOutlet weak var cartButton: UIButton!
   
-  var addToFavoriteProduct: (() -> Void) = {}
-  var removeFavoriteProduct: (() -> Void) = {}
-  var isFav: Bool = false
-  var products: Products!
+  var addToFavoriteProduct: ((_ id: Int) -> Void) = {id in }
   var id: Int = 0
-  private let defaults = UserDefaults.standard
   
   override func awakeFromNib() {
     super.awakeFromNib()
+    selectionStyle = .none
+    
   }
   static func nib() -> UINib {
     return UINib(nibName: "ProductsTableViewCell", bundle: nil)
   }
   
   @IBAction func favoriteButtonTap(_ sender: UIButton) {
-      addToFavoriteProduct()
-      favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
+    addToFavoriteProduct(id)
+    if favButton.isSelected == false {
       favButton.isSelected = true
-  }
-  
-  @IBAction func removeFavoriteProduct(_ sender: UIButton) {
-    removeFavoriteProduct()
+      favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
+    } else {
+      favButton.isSelected = false
+      favButton.backgroundColor = .white
+    }
   }
   
   public func configure(with model: Products, isFavorite: Bool) {
-    DispatchQueue.main.async { [weak self] in
-      guard let self = self else { return }
+      self.id = model.id
       self.productName.text = model.name
       self.productDetails.text = model.details
       self.productPrice.text = "$\(model.price)"
       self.productSalePrice.text = "$\(model.price)"
       self.productImageView.sd_setImage(with: URL(string: model.main_image))
+    
+    if isFavorite {
+      favButton.isSelected = true
+      favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
+    } else {
+      favButton.isSelected = false
+      favButton.backgroundColor = .white
     }
   }
   
