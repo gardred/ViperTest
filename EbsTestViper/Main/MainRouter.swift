@@ -10,52 +10,52 @@ import UIKit
 
 // Router ------> Presenter
 protocol MainRouterProtocol {
-  static func start() -> MainViewController
-  func pushDetailsScreen(navigationController: UINavigationController, productId: Int)
-  func pushFavoriteScreen(navigationController: UINavigationController)
-  func pushAuthentiocationScreen(navigationController: UINavigationController)
+    static func start() -> MainViewController
+    func pushDetailsScreen(navigationController: UINavigationController, productId: Int)
+    func pushFavoriteScreen(navigationController: UINavigationController)
+    func pushAuthentiocationScreen(navigationController: UINavigationController)
 }
 
 class MainRouter: MainRouterProtocol {
-  func pushAuthentiocationScreen(navigationController: UINavigationController) {
-    let router = AuthentiocationRouter.self
-    let authentication = router.createAuthentiocationModule()
-    navigationController.pushViewController(authentication, animated: true)
-  }
-  
-  func pushFavoriteScreen(navigationController: UINavigationController) {
-    let router = FavoriteRouter.self
-    let favorite = router.createFavoriteModule()
-    navigationController.pushViewController(favorite, animated: true)
-  }
-  
-  func pushDetailsScreen(navigationController: UINavigationController, productId: Int) {
-    let router = DetailsRouter.self
-    let details = router.createDetailsModule()
-    details.presenter?.setup(productId: productId)
-    navigationController.pushViewController(details, animated: true)
-  }
-  
-  static func start() -> MainViewController {
+    func pushAuthentiocationScreen(navigationController: UINavigationController) {
+        let router = AuthentiocationRouter.self
+        let authentication = router.createAuthentiocationModule()
+        navigationController.pushViewController(authentication, animated: true)
+    }
     
-    let view = storyboard.instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
+    func pushFavoriteScreen(navigationController: UINavigationController) {
+        let router = FavoriteRouter.self
+        let favorite = router.createFavoriteModule()
+        navigationController.pushViewController(favorite, animated: true)
+    }
     
-    var presenter: MainPresenterProtocol = MainPresenter()
-    var interactor: MainInteractorProtocol = MainInteractor()
-    let router: MainRouterProtocol = MainRouter()
+    func pushDetailsScreen(navigationController: UINavigationController, productId: Int) {
+        let router = DetailsRouter.self
+        let details = router.createDetailsModule()
+        details.presenter?.setup(productId: productId)
+        navigationController.pushViewController(details, animated: true)
+    }
     
-    view.presenter = presenter
+    static func start() -> MainViewController {
+        
+        let view = storyboard.instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
+        
+        var presenter: MainPresenterProtocol = MainPresenter()
+        var interactor: MainInteractorProtocol = MainInteractor()
+        let router: MainRouterProtocol = MainRouter()
+        
+        view.presenter = presenter
+        
+        presenter.view = view
+        presenter.router = router
+        presenter.interactor = interactor
+        
+        interactor.presenter = presenter
+        
+        return view
+    }
     
-    presenter.view = view
-    presenter.router = router
-    presenter.interactor = interactor
-    
-    interactor.presenter = presenter
-    
-    return view
-  }
-  
-  static var storyboard: UIStoryboard {
-    return UIStoryboard(name: "Main", bundle: nil)
-  }
+    static var storyboard: UIStoryboard {
+        return UIStoryboard(name: "Main", bundle: nil)
+    }
 }

@@ -8,9 +8,9 @@
 import Foundation
 
 protocol AuthenticationInteractorProtocol {
-  var presenter: AuthenticationPresenterProtocol? { get set }
+    var presenter: AuthenticationPresenterProtocol? { get set }
 }
 
 class AuthenticationInteractor: AuthenticationInteractorProtocol {
-  var presenter: AuthenticationPresenterProtocol?
+    var presenter: AuthenticationPresenterProtocol?
 }

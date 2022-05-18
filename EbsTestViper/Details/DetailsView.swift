@@ -11,109 +11,112 @@ import SkeletonView
 import RealmSwift
 // MARK: Protocol
 protocol DetailsViewProtocol {
-  var presenter: DetailsPresenterProtocol? { get set }
-  var products: Products! { get set }
-  var id: Int! { get set }
-  
-  func getSingleProductSuccess(singleProduct: Products)
+    var presenter: DetailsPresenterProtocol? { get set }
+    var products: Product? { get set }
+    
+    var id: Int! { get set }
+    
+    func getSingleProductSuccess(singleProduct: Product)
 }
 // MARK: Class
 class DetailsView: BaseViewController, DetailsViewProtocol {
-  var id: Int!
-  var products: Products!
-  var presenter: DetailsPresenterProtocol?
-  let realm = try? Realm()
-  var favoriteList: Results<FavoriteList>!
-  // UIElements
-  @IBOutlet weak var productDetails: UITableView!
-  var cells: [CellType] = []
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    setupNavigationBar()
-    presenter?.getSingleProduct()
     
-    favoriteList = self.realm?.objects(FavoriteList.self)
+    // UIElements
+    @IBOutlet weak var productDetails: UITableView!
     
-    let contains = realm?.objects(FavoriteList.self).contains { favoriteObject in
-      if favoriteObject.id == presenter?.id {
-        navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
-        navigationItem.rightBarButtonItem?.action = #selector(removed)
-      }
-      return false
+    // Variables
+    var cells: [CellType] = []
+    var id: Int!
+    var products: Product?
+    var presenter: DetailsPresenterProtocol?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupNavigationBar()
+        checkFavoriteElements()
+        presenter?.getSingleProduct()
+    
+        productDetails.register(ProductImageTableViewCell.nib(), forCellReuseIdentifier: ProductImageTableViewCell.identifier)
+        productDetails.register(DetailsTableViewCell.nib(), forCellReuseIdentifier: DetailsTableViewCell.identifier)
+        productDetails.register(InformationTableViewCell.nib(), forCellReuseIdentifier: InformationTableViewCell.identifier)
+        productDetails.delegate = self
+        productDetails.dataSource = self
     }
     
-    productDetails.register(ProductImageTableViewCell.nib(), forCellReuseIdentifier: ProductImageTableViewCell.identifier)
-    productDetails.register(DetailsTableViewCell.nib(), forCellReuseIdentifier: DetailsTableViewCell.identifier)
-    productDetails.register(InformationTableViewCell.nib(), forCellReuseIdentifier: InformationTableViewCell.identifier)
-    productDetails.delegate = self
-    productDetails.dataSource = self
-  }
-  
-  func setupNavigationBar() {
-    setBackButton()
-    setRightBarButtonHeart()
-    setLogo()
-    navigationItem.rightBarButtonItem?.action = #selector(added)
-  }
-  @objc func added() {
-    navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
-    RealmService.shared.addProduct(with: products!)
-  }
-  
-  @objc func removed() {
-    navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
-    RealmService.shared.deleteElement(products: products)
-  }
-  
-  func getSingleProductSuccess(singleProduct: Products) {
-    products = singleProduct
-    DispatchQueue.main.async { [weak self] in
-      guard let self = self else { return }
-      self.cells = [.imageView(self.products.main_image), .details(self.products), .information(self.products)]
-      self.productDetails.reloadData()
+    private func setupNavigationBar() {
+        setBackButton()
+        setRightBarButtonHeart()
+        setLogo()
+        navigationItem.rightBarButtonItem?.action = #selector(markAsFavorite)
     }
-  }
+    @objc func markAsFavorite() {
+        if let id = presenter?.id {
+            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+            presenter?.toggleFavorite(id: id)
+        }
+    }
+    
+    private func checkFavoriteElements() {
+        if let products = products {
+            let isFavorite = RealmService.shared.checkRealmElements(products: products)
+            if isFavorite {
+                navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+            } else {
+                navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
+            }
+        } else {
+            print("Object was not found")
+        }
+    }
+    
+    func getSingleProductSuccess(singleProduct: Product) {
+        products = singleProduct
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.cells = [.imageView(self.products?.main_image ?? "Error", isSkeleton: false), .details(self.products, isSkeleton: false), .information(self.products, isSkeleton: false)]
+            self.productDetails.reloadData()
+        }
+    }
 }
 
 // MARK: - Extension TableView
 extension DetailsView: UITableViewDelegate, UITableViewDataSource {
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return cells.count
-  }
-  
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
-    switch cells[indexPath.row] {
-    case .imageView:
-      let cell = productDetails.dequeueReusableCell(withIdentifier: ProductImageTableViewCell.identifier, for: indexPath) as! ProductImageTableViewCell
-      cell.productImageView.sd_setImage(with: URL(string: products.main_image))
-      cell.productImageView.hideSkeleton()
-      cell.productImageView.stopSkeletonAnimation()
-      cell.selectionStyle = .none
-      return cell
-    case .details:
-      let cell = productDetails.dequeueReusableCell(withIdentifier: DetailsTableViewCell.identifier, for: indexPath) as! DetailsTableViewCell
-      cell.configure(with: products)
-      cell.selectionStyle = .none
-      return cell
-    case .information:
-      let cell = productDetails.dequeueReusableCell(withIdentifier: InformationTableViewCell.identifier, for: indexPath) as! InformationTableViewCell
-      cell.configure(with: products)
-      
-      cell.selectionStyle = .none
-      return cell
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cells.count
     }
-  }
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     
-    switch cells[indexPath.row] {
-    case .imageView:
-      return 300
-    case .details:
-      return UITableView.automaticDimension
-    case .information:
-      return UITableView.automaticDimension
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        switch cells[indexPath.row] {
+        case .imageView:
+            let cell = productDetails.dequeueReusableCell(withIdentifier: ProductImageTableViewCell.identifier, for: indexPath) as! ProductImageTableViewCell
+            cell.showSkeleton()
+            cell.productImageView.sd_setImage(with: URL(string: products?.main_image ?? "Error"))
+            
+            return cell
+        case .details:
+            let cell = productDetails.dequeueReusableCell(withIdentifier: DetailsTableViewCell.identifier, for: indexPath) as! DetailsTableViewCell
+            cell.showSkeleton()
+            cell.configure(with: products!)
+            
+            return cell
+        case .information:
+            let cell = productDetails.dequeueReusableCell(withIdentifier: InformationTableViewCell.identifier, for: indexPath) as! InformationTableViewCell
+            cell.showSkeleton()
+            cell.configure(with: products!)
+            
+            return cell
+        }
     }
-  }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        switch cells[indexPath.row] {
+        case .imageView:
+            return 300
+        case .details:
+            return UITableView.automaticDimension
+        case .information:
+            return UITableView.automaticDimension
+        }
+    }
 }

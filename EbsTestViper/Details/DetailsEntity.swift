@@ -8,12 +8,11 @@
 import Foundation
 
 enum CellType {
-    case imageView(String)
-    case details(Products)
-    case information(Products)
+  case imageView(String, isSkeleton: Bool)
+  case details(Product?, isSkeleton: Bool)
+  case information(Product?, isSkeleton: Bool)
 }
 
 enum APIError: Error {
   case failedToGetData
-  case noInternetConnection(Error)
 }

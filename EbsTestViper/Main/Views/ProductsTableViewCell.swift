@@ -19,7 +19,7 @@ class ProductsTableViewCell: UITableViewCell {
   @IBOutlet weak var favButton: UIButton!
   @IBOutlet weak var cartButton: UIButton!
   
-  var addToFavoriteProduct: ((_ id: Int) -> Void) = {id in }
+  var addToFavoriteProduct: ((_ id: Int) -> Void) = { _ in }
   var id: Int = 0
   
   override func awakeFromNib() {
@@ -42,7 +42,7 @@ class ProductsTableViewCell: UITableViewCell {
     }
   }
   
-  public func configure(with model: Products, isFavorite: Bool) {
+  public func configure(with model: Product, isFavorite: Bool) {
       self.id = model.id
       self.productName.text = model.name
       self.productDetails.text = model.details
@@ -58,16 +58,4 @@ class ProductsTableViewCell: UITableViewCell {
       favButton.backgroundColor = .white
     }
   }
-  
-  public func configureFavoriteProduct(with model: FavoriteList) {
-    DispatchQueue.main.async { [weak self] in
-      guard let self = self else { return }
-      self.productName.text = model.name
-      self.productPrice.text = "$\(model.price)"
-      self.productDetails.text = model.details
-      self.productImageView.sd_setImage(with: URL(string: model.main_image))
-      self.productSalePrice.text = "$\(model.price)"
-    }
-  }
-  
 }
