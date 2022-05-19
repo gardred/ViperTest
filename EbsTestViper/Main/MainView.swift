@@ -41,6 +41,7 @@ class MainViewController: BaseViewController, MainViewProtocol {
         super.viewDidLoad()
         setupNavigationBar()
         downloadImage()
+        checkNetworkConnection()
         presenter?.startFetchingProducts()
         
         productsTableView.register(ProductsTableViewCell.nib(), forCellReuseIdentifier: ProductsTableViewCell.identifier)
@@ -68,11 +69,13 @@ class MainViewController: BaseViewController, MainViewProtocol {
     }
     
     @objc private func navigationToFavoriteScreen() {
-        presenter?.pushFavoriteViewController(navigationController: navigationController!)
+        guard let navigationController = navigationController else { return }
+        presenter?.pushFavoriteViewController(navigationController: navigationController)
     }
     
     @objc private func navigationToAuthentiocationScreen() {
-        presenter?.pushAuthentiocationViewController(navigationController: navigationController!)
+        guard let navigationController = navigationController else { return }
+        presenter?.pushAuthentiocationViewController(navigationController: navigationController)
     }
     
     @objc private func pullUpRefreshControl(_ sender: UIRefreshControl) {
@@ -86,12 +89,6 @@ class MainViewController: BaseViewController, MainViewProtocol {
     func checkNetworkConnection() {
         monitor.pathUpdateHandler = { pathUpdateHandler in
             if pathUpdateHandler.status == .satisfied {
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "Success", message: "", preferredStyle: .alert)
-                    let cancel = UIAlertAction(title: "Cancel", style: .cancel)
-                    alert.addAction(cancel)
-                    self.present(alert, animated: true)
-                }
             } else {
                 DispatchQueue.main.async {
                     let alert = UIAlertController(title: "Error", message: "No internet", preferredStyle: .alert)
@@ -105,7 +102,7 @@ class MainViewController: BaseViewController, MainViewProtocol {
     }
     
     func downloadImage() {
-        let url = URL(string: Constansts.baseURL)!
+        guard let url = URL(string: Constansts.baseURL) else { return }
         presenter?.asynchronouslyDownloadImages(from: url)
     }
 }
@@ -126,7 +123,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter?.pushDetailsViewController(navigationController: navigationController!, productId: products[indexPath.row].id)
+        guard let navigationController = navigationController else { return }
+        presenter?.pushDetailsViewController(navigationController: navigationController, productId: products[indexPath.row].id)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

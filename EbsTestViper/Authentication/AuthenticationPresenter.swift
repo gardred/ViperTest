@@ -41,7 +41,7 @@ class AuthenticationPresenter: AuthenticationPresenterProtocol {
                 
             })
         } else {
-            print("Error")
+            
         }
     }
 }

@@ -8,7 +8,7 @@
 import Foundation
 
 enum CellType {
-  case imageView(String, isSkeleton: Bool)
+  case imageView(String?, isSkeleton: Bool)
   case details(Product?, isSkeleton: Bool)
   case information(Product?, isSkeleton: Bool)
 }

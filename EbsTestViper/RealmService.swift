@@ -9,13 +9,14 @@ import Foundation
 import RealmSwift
 
 class RealmService {
+    
     static let shared = RealmService()
     let realm = try? Realm()
     
     func addProduct(with model: Product) {
         do {
-            try? realm?.write {
-                realm?.add(model)
+            try realm?.write {
+                realm?.create(Product.self, value: model, update: .all)
             }
         } catch {
             return
@@ -24,8 +25,8 @@ class RealmService {
     
     func removeProduct(productToDelete: Product) {
         do {
-            try? self.realm?.write({
-                self.realm?.delete(productToDelete)
+            try realm?.write({
+                realm?.delete(productToDelete)
             })
         } catch {
             return
@@ -45,7 +46,4 @@ class RealmService {
         })
         return contains
     }
-    
-    
-    
 }

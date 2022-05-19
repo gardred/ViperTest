@@ -57,17 +57,16 @@ class MainPresenter: MainPresenterProtocol {
         if let product = RealmService.shared.findProduct(id: id) {
             RealmService.shared.removeProduct(productToDelete: product)
         } else {
-            let product = products.first(where: { $0.id == id })
-            RealmService.shared.addProduct(with: product!)
+            guard let product = products.first(where: { $0.id == id }) else { return }
+            RealmService.shared.addProduct(with: product)
         }
     }
     
     func asynchronouslyDownloadImages(from url: URL) {
-        interactor?.getData(from: url, completion: { data, response, error in
-            guard let data = data, error == nil else {
+        interactor?.getData(from: url, completion: { data, _, error in
+            guard let _ = data, error == nil else {
                 return
             }
-            print(response?.suggestedFilename ?? url.lastPathComponent)
         })
     }
     

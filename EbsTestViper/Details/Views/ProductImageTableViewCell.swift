@@ -22,13 +22,9 @@ class ProductImageTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: Product ) {
+       
         self.productImageView.sd_setImage(with: URL(string: model.main_image))
         self.productImageView.stopSkeletonAnimation()
         self.productImageView.hideSkeleton()
-    }
-    
-    public func showSkeleton() {
-        productImageView.isSkeletonable = true
-        productImageView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
     }
 }

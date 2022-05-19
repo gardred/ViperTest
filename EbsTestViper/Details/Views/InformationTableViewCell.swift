@@ -25,19 +25,19 @@ class InformationTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: Product) {
-        self.productInformation.text = model.details
         self.informationLabel.stopSkeletonAnimation()
         self.informationLabel.hideSkeleton()
         
+        self.productInformation.text = model.details
         self.productInformation.stopSkeletonAnimation()
         self.productInformation.hideSkeleton()
     }
     
-    public func showSkeleton() {
-        informationLabel.isSkeletonable = true
-        informationLabel.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
+    public func presentSkeleton() {
+        self.informationLabel.isSkeletonable = true
+        self.informationLabel.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
         
-        productInformation.isSkeletonable = true
-        productInformation.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
+        self.productInformation.isSkeletonable = true
+        self.productInformation.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
     }
 }

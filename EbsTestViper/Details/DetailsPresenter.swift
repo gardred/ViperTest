@@ -16,7 +16,7 @@ protocol DetailsPresenterProtocol {
     
     var id: Int { get set }
     var singleProduct: Product? { get set }
-    var products: [Product] { get set}
+    
     func getSingleProduct()
     func setup(productId: Int)
     func toggleFavorite(id: Int)
@@ -25,7 +25,7 @@ protocol DetailsPresenterProtocol {
 }
     // MARK: - Class
 class DetailsPresenter: DetailsPresenterProtocol {
-    var products: [Product] = []
+    
     var singleProduct: Product?
     var id: Int = 0
     
@@ -43,7 +43,8 @@ class DetailsPresenter: DetailsPresenterProtocol {
             switch result {
             case .success(let product):
                 self.singleProduct = product
-                self.view?.getSingleProductSuccess(singleProduct: self.singleProduct!)
+                guard let singleProduct = self.singleProduct else { return }
+                self.view?.getSingleProductSuccess(singleProduct: singleProduct)
             case .failure:
                 let alert = UIAlertController(title: "Error", message: "Failed to get product!", preferredStyle: .alert)
                 let cancel = UIAlertAction(title: "Cancel", style: .cancel)
@@ -54,15 +55,12 @@ class DetailsPresenter: DetailsPresenterProtocol {
     }
     
     func toggleFavorite(id: Int) {
-        if let product = singleProduct {
             if let product = RealmService.shared.findProduct(id: id) {
                 RealmService.shared.removeProduct(productToDelete: product)
             } else {
-                let product = products.first(where: { $0.id == id})
-                RealmService.shared.addProduct(with: product!)
+                guard let product = singleProduct else { return }
+                RealmService.shared.addProduct(with: product)
             }
-        }
-        
     }
     
     func pushFavoriteViewController(navigationController: UINavigationController) {

@@ -43,17 +43,17 @@ class DetailsTableViewCell: UITableViewCell {
         self.productSalePrice.hideSkeleton()
     }
     
-    public func showSkeleton() {
-        productName.isSkeletonable = true
-        productName.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
+    public func presentSkeleton() {
+        self.productName.isSkeletonable = true
+        self.productName.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
         
-        productDetails.isSkeletonable = true
-        productDetails.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
+        self.productDetails.isSkeletonable = true
+        self.productDetails.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
         
-        productPrice.isSkeletonable = true
-        productPrice.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
+        self.productPrice.isSkeletonable = true
+        self.productPrice.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
         
-        productSalePrice.isSkeletonable = true
-        productSalePrice.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
+        self.productSalePrice.isSkeletonable = true
+        self.productSalePrice.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
     }
 }

@@ -9,15 +9,17 @@ import Foundation
 import UIKit
 import SkeletonView
 import RealmSwift
+
 // MARK: Protocol
+
 protocol DetailsViewProtocol {
     var presenter: DetailsPresenterProtocol? { get set }
     var products: Product? { get set }
-    
     var id: Int! { get set }
     
     func getSingleProductSuccess(singleProduct: Product)
 }
+
 // MARK: Class
 class DetailsView: BaseViewController, DetailsViewProtocol {
     
@@ -30,12 +32,15 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
     var products: Product?
     var presenter: DetailsPresenterProtocol?
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkFavoriteInRealm()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        checkFavoriteElements()
         presenter?.getSingleProduct()
-    
+        
         productDetails.register(ProductImageTableViewCell.nib(), forCellReuseIdentifier: ProductImageTableViewCell.identifier)
         productDetails.register(DetailsTableViewCell.nib(), forCellReuseIdentifier: DetailsTableViewCell.identifier)
         productDetails.register(InformationTableViewCell.nib(), forCellReuseIdentifier: InformationTableViewCell.identifier)
@@ -49,31 +54,32 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
         setLogo()
         navigationItem.rightBarButtonItem?.action = #selector(markAsFavorite)
     }
+    
     @objc func markAsFavorite() {
-        if let id = presenter?.id {
+        if let products = products {
+            presenter?.toggleFavorite(id: products.id)
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
-            presenter?.toggleFavorite(id: id)
         }
     }
     
-    private func checkFavoriteElements() {
+    func checkFavoriteInRealm() {
         if let products = products {
-            let isFavorite = RealmService.shared.checkRealmElements(products: products)
-            if isFavorite {
+            let contains = RealmService.shared.checkRealmElements(products: products)
+            if contains {
                 navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
             } else {
                 navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
             }
-        } else {
-            print("Object was not found")
         }
     }
     
     func getSingleProductSuccess(singleProduct: Product) {
         products = singleProduct
+        
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.cells = [.imageView(self.products?.main_image ?? "Error", isSkeleton: false), .details(self.products, isSkeleton: false), .information(self.products, isSkeleton: false)]
+            guard let products = self.products else { return }
+            self.cells = [.imageView(products.main_image, isSkeleton: false), .details(products, isSkeleton: false), .information(products, isSkeleton: false)]
             self.productDetails.reloadData()
         }
     }
@@ -81,6 +87,7 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
 
 // MARK: - Extension TableView
 extension DetailsView: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cells.count
     }
@@ -88,28 +95,45 @@ extension DetailsView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         switch cells[indexPath.row] {
-        case .imageView:
+        case .imageView(_, let isSkeleton):
             let cell = productDetails.dequeueReusableCell(withIdentifier: ProductImageTableViewCell.identifier, for: indexPath) as! ProductImageTableViewCell
-            cell.showSkeleton()
-            cell.productImageView.sd_setImage(with: URL(string: products?.main_image ?? "Error"))
+            if isSkeleton {
+                cell.productImageView.isSkeletonable = true
+                cell.productImageView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
+                
+            }
+            if let products = products {
+                cell.productImageView.stopSkeletonAnimation()
+                cell.productImageView.sd_setImage(with: URL(string: products.main_image))
+                cell.hideSkeleton()
+            }
             
             return cell
-        case .details:
+        case .details(_, let isSkeleton):
             let cell = productDetails.dequeueReusableCell(withIdentifier: DetailsTableViewCell.identifier, for: indexPath) as! DetailsTableViewCell
-            cell.showSkeleton()
-            cell.configure(with: products!)
+            if isSkeleton {
+                cell.presentSkeleton()
+            }
+            if let products = products {
+                cell.configure(with: products)
+            }
             
             return cell
-        case .information:
+        case .information(_, let isSkeleton):
             let cell = productDetails.dequeueReusableCell(withIdentifier: InformationTableViewCell.identifier, for: indexPath) as! InformationTableViewCell
-            cell.showSkeleton()
-            cell.configure(with: products!)
+            if isSkeleton {
+                cell.presentSkeleton()
+            }
+            if let products = products {
+                cell.configure(with: products)
+            }
+            
             
             return cell
         }
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         switch cells[indexPath.row] {
         case .imageView:
             return 300

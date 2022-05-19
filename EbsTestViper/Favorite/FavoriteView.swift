@@ -45,8 +45,6 @@ class FavoriteView: BaseViewController, FavoriteViewProtocol {
                     tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
                     tableView.insertRows(at: insertions.map({IndexPath(row: $0, section: 0)}), with: .automatic)
                     tableView.reloadRows(at: modifications.map({IndexPath(row: $0, section: 0)}), with: .automatic)
-                } completion: { finished in
-                    
                 }
             case .error: break
             }
@@ -83,6 +81,7 @@ extension FavoriteView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = favoriteList[indexPath.row]
-        presenter?.pushDetailsViewController(navigationController: navigationController!, productId: product.id)
+        guard let navigationController = navigationController else { return }
+        presenter?.pushDetailsViewController(navigationController: navigationController, productId: product.id)
     }
 }

@@ -68,7 +68,8 @@ class MainInteractor: MainInteractorProtocol {
                 else {
                     return
                 }
-                guard let image = UIImage(data: data!) else { return }
+                guard let data = data else { return }
+                guard let image = UIImage(data: data) else { return }
                 self.imageCache.setObject(image, forKey: url.absoluteString as NSString)
                 
                 DispatchQueue.main.async {
@@ -80,4 +81,3 @@ class MainInteractor: MainInteractorProtocol {
         
     }
 }
-

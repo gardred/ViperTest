@@ -30,8 +30,8 @@ class FavoritePresenter: FavoritePresenterProtocol {
         if let product = RealmService.shared.findProduct(id: id) {
             RealmService.shared.removeProduct(productToDelete: product)
         } else {
-            let product = products.first(where: { $0.id == id})
-            RealmService.shared.addProduct(with: product!)
+            guard let product = products.first(where: { $0.id == id}) else { return }
+            RealmService.shared.addProduct(with: product)
         }
     }
     
