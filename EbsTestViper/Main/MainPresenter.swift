@@ -36,7 +36,6 @@ class MainPresenter: MainPresenterProtocol {
     var interactor: MainInteractorProtocol?
     var view: MainViewProtocol?
     var products = [Product]()
-    
     private var url = URL(string: Constansts.baseURL)
     
     func startFetchingProducts() {

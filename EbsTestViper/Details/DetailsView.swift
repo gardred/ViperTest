@@ -36,6 +36,7 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        cells = [.imageView("", isSkeleton: true), .details(products, isSkeleton: true), .information(products, isSkeleton: true)]
         presenter?.getSingleProduct()
         
         productDetails.register(ProductImageTableViewCell.nib(), forCellReuseIdentifier: ProductImageTableViewCell.identifier)
@@ -55,7 +56,12 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
     @objc func markAsFavorite() {
         if let products = products {
             presenter?.toggleFavorite(id: products.id)
-            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+            let contains = RealmService.shared.checkRealmElements(products: products)
+            if contains {
+                navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+            } else {
+                navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
+            }
         }
     }
     
@@ -96,7 +102,6 @@ extension DetailsView: UITableViewDelegate, UITableViewDataSource {
             if isSkeleton {
                 cell.productImageView.isSkeletonable = true
                 cell.productImageView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
-                
             }
             if let products = products {
                 cell.productImageView.stopSkeletonAnimation()
@@ -112,7 +117,6 @@ extension DetailsView: UITableViewDelegate, UITableViewDataSource {
             if let products = products {
                 cell.configure(with: products)
             }
-            
             return cell
         case .information(_, let isSkeleton):
             let cell = productDetails.dequeueReusableCell(withIdentifier: InformationTableViewCell.identifier, for: indexPath) as! InformationTableViewCell

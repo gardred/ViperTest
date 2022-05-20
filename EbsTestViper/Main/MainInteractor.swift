@@ -21,7 +21,7 @@ protocol MainInteractorProtocol {
 class MainInteractor: MainInteractorProtocol {
     
     var presenter: MainPresenterProtocol?
-    
+    var imageCache = NSCache<NSString, UIImage>()
     // API Errors
     enum APIError: Error {
         case failedToGetData
@@ -51,8 +51,6 @@ class MainInteractor: MainInteractorProtocol {
         dataTask.resume()
     }
     // Cache image
-    
-    var imageCache = NSCache<NSString, UIImage>()
     
     func downloadImage(url: URL, completion: @escaping (UIImage?) -> Void) {
         if let cachedImage = imageCache.object(forKey: url.absoluteString  as NSString) {
