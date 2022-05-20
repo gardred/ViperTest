@@ -9,6 +9,7 @@ import UIKit
 import SkeletonView
 
 class DetailsTableViewCell: UITableViewCell {
+   
     static let identifier = "DetailsTableViewCell"
     @IBOutlet weak var productName: UILabel!
     @IBOutlet weak var productDetails: UILabel!

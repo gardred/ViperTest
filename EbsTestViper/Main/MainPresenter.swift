@@ -20,23 +20,24 @@ protocol MainPresenterProtocol {
     var current_page: Int {get set }
     
     func startFetchingProducts()
-    func asynchronouslyDownloadImages(from url: URL)
     func fetchProductsSuccess(products: [Product])
+    func cacheImage(_ imageView: UIImageView)
+    func toggleFavorite(id: Int)
     
     func pushDetailsViewController(navigationController: UINavigationController, productId: Int)
     func pushFavoriteViewController(navigationController: UINavigationController)
     func pushAuthentiocationViewController(navigationController: UINavigationController)
-    
-    func toggleFavorite(id: Int)
 }
 
 class MainPresenter: MainPresenterProtocol {
-    
+  
     var current_page: Int = 1
     var router: MainRouterProtocol?
     var interactor: MainInteractorProtocol?
     var view: MainViewProtocol?
     var products = [Product]()
+    
+    private var url = URL(string: Constansts.baseURL)
     
     func startFetchingProducts() {
         interactor?.getProducts(atPage: current_page, completion: { [weak self] (result) in
@@ -53,6 +54,13 @@ class MainPresenter: MainPresenterProtocol {
         })
     }
     
+    func cacheImage(_ imageView: UIImageView) {
+        guard let url = url else { return }
+        interactor?.downloadImage(url: url, completion: { image in
+            imageView.image = image
+        })
+    }
+
     func toggleFavorite(id: Int) {
         if let product = RealmService.shared.findProduct(id: id) {
             RealmService.shared.removeProduct(productToDelete: product)
@@ -60,14 +68,6 @@ class MainPresenter: MainPresenterProtocol {
             guard let product = products.first(where: { $0.id == id }) else { return }
             RealmService.shared.addProduct(with: product)
         }
-    }
-    
-    func asynchronouslyDownloadImages(from url: URL) {
-        interactor?.getData(from: url, completion: { data, _, error in
-            guard let _ = data, error == nil else {
-                return
-            }
-        })
     }
     
     func fetchProductsSuccess(products: [Product]) {

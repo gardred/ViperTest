@@ -15,8 +15,6 @@ import RealmSwift
 protocol DetailsViewProtocol {
     var presenter: DetailsPresenterProtocol? { get set }
     var products: Product? { get set }
-    var id: Int! { get set }
-    
     func getSingleProductSuccess(singleProduct: Product)
 }
 
@@ -28,7 +26,6 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
     
     // Variables
     var cells: [CellType] = []
-    var id: Int!
     var products: Product?
     var presenter: DetailsPresenterProtocol?
     
@@ -75,7 +72,6 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
     
     func getSingleProductSuccess(singleProduct: Product) {
         products = singleProduct
-        
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             guard let products = self.products else { return }
@@ -107,7 +103,6 @@ extension DetailsView: UITableViewDelegate, UITableViewDataSource {
                 cell.productImageView.sd_setImage(with: URL(string: products.main_image))
                 cell.hideSkeleton()
             }
-            
             return cell
         case .details(_, let isSkeleton):
             let cell = productDetails.dequeueReusableCell(withIdentifier: DetailsTableViewCell.identifier, for: indexPath) as! DetailsTableViewCell
@@ -127,8 +122,6 @@ extension DetailsView: UITableViewDelegate, UITableViewDataSource {
             if let products = products {
                 cell.configure(with: products)
             }
-            
-            
             return cell
         }
     }

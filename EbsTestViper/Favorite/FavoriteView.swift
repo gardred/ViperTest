@@ -12,6 +12,7 @@ import RealmSwift
 protocol FavoriteViewProtocol {
     var presenter: FavoritePresenterProtocol? { get set }
 }
+
 class FavoriteView: BaseViewController, FavoriteViewProtocol {
     
     let realm = try? Realm()

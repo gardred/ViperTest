@@ -40,7 +40,6 @@ class MainViewController: BaseViewController, MainViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        downloadImage()
         checkNetworkConnection()
         presenter?.startFetchingProducts()
         
@@ -89,6 +88,7 @@ class MainViewController: BaseViewController, MainViewProtocol {
     func checkNetworkConnection() {
         monitor.pathUpdateHandler = { pathUpdateHandler in
             if pathUpdateHandler.status == .satisfied {
+                
             } else {
                 DispatchQueue.main.async {
                     let alert = UIAlertController(title: "Error", message: "No internet", preferredStyle: .alert)
@@ -99,11 +99,6 @@ class MainViewController: BaseViewController, MainViewProtocol {
             }
         }
         monitor.start(queue: DispatchQueue.global())
-    }
-    
-    func downloadImage() {
-        guard let url = URL(string: Constansts.baseURL) else { return }
-        presenter?.asynchronouslyDownloadImages(from: url)
     }
 }
 
@@ -116,9 +111,11 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = productsTableView.dequeueReusableCell(withIdentifier: ProductsTableViewCell.identifier, for: indexPath) as? ProductsTableViewCell else {return UITableViewCell()}
         let product = products[indexPath.row]
         cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product))
+        presenter?.cacheImage(cell.productImageView)
         cell.addToFavoriteProduct = {[weak self] (id) in
                 self?.presenter?.toggleFavorite(id: id)
         }
+        
         return cell
     }
     

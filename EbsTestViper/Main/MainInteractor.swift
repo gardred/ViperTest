@@ -16,12 +16,12 @@ protocol MainInteractorProtocol {
     
     func getProducts(atPage page: Int, completion: @escaping (Result<[Product], Error >) -> Void)
     func downloadImage(url: URL, completion: @escaping (UIImage?) -> Void)
-    func getData(from url: URL, completion: @escaping(Data?, URLResponse?, Error?) -> Void)
 }
 
 class MainInteractor: MainInteractorProtocol {
+    
     var presenter: MainPresenterProtocol?
-    var imageCache = NSCache<NSString, UIImage>()
+    
     // API Errors
     enum APIError: Error {
         case failedToGetData
@@ -50,11 +50,9 @@ class MainInteractor: MainInteractorProtocol {
         }
         dataTask.resume()
     }
-    // Cache images
+    // Cache image
     
-    func getData(from url: URL, completion: @escaping(Data?, URLResponse?, Error?) -> Void) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
+    var imageCache = NSCache<NSString, UIImage>()
     
     func downloadImage(url: URL, completion: @escaping (UIImage?) -> Void) {
         if let cachedImage = imageCache.object(forKey: url.absoluteString  as NSString) {

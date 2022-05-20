@@ -20,10 +20,10 @@ protocol FavoritePresenterProtocol {
 }
 
 class FavoritePresenter: FavoritePresenterProtocol {
-    var products = [Product]()
     var view: FavoriteViewProtocol?
     var interactor: FavoriteInteracorProtocol?
     var router: FavoriteRouterProtocol?
+    var products = [Product]()
     var id: Int = 0
     
     func toggleFavorite(id: Int) {

@@ -13,7 +13,6 @@ import GoogleSignIn
 
 protocol AuthenticationViewProtocol {
     var presenter: AuthenticationPresenterProtocol? { get set }
-    var data: String { get set }
 }
 
 class AuthenticationView: BaseViewController, AuthenticationViewProtocol {
@@ -24,7 +23,6 @@ class AuthenticationView: BaseViewController, AuthenticationViewProtocol {
     @IBOutlet weak var userEmail: UILabel!
     @IBOutlet weak var googleButton: UIButton!
     
-    var data: String = ""
     let signInConfig = GIDConfiguration.init(clientID: "222842387933-8mhtquavgll9o5lstcnl25md0l73q9eh.apps.googleusercontent.com")
     
     override func viewDidLoad() {
@@ -46,6 +44,7 @@ class AuthenticationView: BaseViewController, AuthenticationViewProtocol {
         setLogo()
         setRightBarButtonHeart()
     }
+    
     @IBAction func googleSignIn(_ sender: Any) {
         GIDSignIn.sharedInstance.signIn(with: signInConfig, presenting: self) { user, error in
             guard error == nil else { return }
