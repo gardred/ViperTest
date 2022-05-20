@@ -15,13 +15,13 @@ protocol MainViewProtocol {
     var isFetchingData: Bool { get set }
     
     func fetchProductsSuccess(productsArray: [Product])
-    func checkNetworkConnection()
+    func failedToFetchProducts()
 }
 
 class MainViewController: BaseViewController, MainViewProtocol {
     
     // UIElements
-    @IBOutlet weak var productsTableView: UITableView!
+    @IBOutlet weak var productsCollectionView: UICollectionView!
     @IBOutlet weak var cartView: UIView!
     @IBOutlet weak var cartCountLabel: UILabel!
     private let refreshControl = UIRefreshControl()
@@ -30,23 +30,23 @@ class MainViewController: BaseViewController, MainViewProtocol {
     private var products: [Product] = [Product]()
     var isFetchingData = false
     var presenter: MainPresenterProtocol?
-    let monitor = NWPathMonitor()
+    
     // Lifecycle
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        productsTableView.reloadData()
+        productsCollectionView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        checkNetworkConnection()
+        
         presenter?.startFetchingProducts()
         
-        productsTableView.register(ProductsTableViewCell.nib(), forCellReuseIdentifier: ProductsTableViewCell.identifier)
-        productsTableView.delegate = self
-        productsTableView.dataSource = self
-        productsTableView.refreshControl = refreshControl
+        productsCollectionView.register(ProductsCollectionViewCell.nib(), forCellWithReuseIdentifier: ProductsCollectionViewCell.identifier)
+        productsCollectionView.delegate = self
+        productsCollectionView.dataSource = self
+        productsCollectionView.refreshControl = refreshControl
         
         refreshControl.addTarget(self, action: #selector(pullUpRefreshControl), for: .valueChanged)
     }
@@ -55,11 +55,18 @@ class MainViewController: BaseViewController, MainViewProtocol {
     func fetchProductsSuccess(productsArray: [Product]) {
         products = productsArray
         DispatchQueue.main.async { [weak self] in
-            self?.productsTableView.reloadData()
+            self?.productsCollectionView.reloadData()
         }
     }
     
-   private func setupNavigationBar() {
+    func failedToFetchProducts() {
+        let alert = UIAlertController(title: "error", message: "Failed to get products", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(cancel)
+        self.present(alert, animated: true)
+    }
+    
+    private func setupNavigationBar() {
         setRightBarButtonHeart()
         setLogo()
         setLeftBarButtonPreson()
@@ -85,46 +92,37 @@ class MainViewController: BaseViewController, MainViewProtocol {
         refreshControl.endRefreshing()
     }
     
-    func checkNetworkConnection() {
-        monitor.pathUpdateHandler = { pathUpdateHandler in
-            if pathUpdateHandler.status == .satisfied {
-                
-            } else {
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "Error", message: "No internet", preferredStyle: .alert)
-                    let cancel = UIAlertAction(title: "Cancel", style: .cancel)
-                    alert.addAction(cancel)
-                    self.present(alert, animated: true)
-                }
-            }
-        }
-        monitor.start(queue: DispatchQueue.global())
-    }
 }
 
-extension MainViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+// MARK: ColletionView Extension
+extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = productsTableView.dequeueReusableCell(withIdentifier: ProductsTableViewCell.identifier, for: indexPath) as? ProductsTableViewCell else {return UITableViewCell()}
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = productsCollectionView.dequeueReusableCell(withReuseIdentifier: ProductsCollectionViewCell.identifier, for: indexPath) as! ProductsCollectionViewCell
         let product = products[indexPath.row]
         cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product))
-        presenter?.cacheImage(cell.productImageView)
-        cell.addToFavoriteProduct = {[weak self] (id) in
-                self?.presenter?.toggleFavorite(id: id)
+        self.presenter?.cacheImage(cell.productImageView)
+        cell.addToFavoriteProduct = { [weak self] (id) in
+            self?.presenter?.toggleFavorite(id: id)
+            
         }
-        
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let navigationController = navigationController else { return }
         presenter?.pushDetailsViewController(navigationController: navigationController, productId: products[indexPath.row].id)
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let lastProduct = products.count - 1
         if indexPath.row == lastProduct && !isFetchingData {
             DispatchQueue.main.async { [weak self] in
@@ -132,5 +130,18 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                 self?.presenter?.startFetchingProducts()
             }
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let headerView = productsCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ProductsCollectionReusableView", for: indexPath) as! ProductsCollectionReusableView
+        
+        headerView.squareCells = { [weak self] in
+            self?.productsCollectionView.reloadData()
+        }
+        return headerView
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 345, height: 213)
     }
 }

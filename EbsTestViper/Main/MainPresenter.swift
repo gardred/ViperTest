@@ -23,6 +23,7 @@ protocol MainPresenterProtocol {
     func fetchProductsSuccess(products: [Product])
     func cacheImage(_ imageView: UIImageView)
     func toggleFavorite(id: Int)
+//    func checkNetworkConnection()
     
     func pushDetailsViewController(navigationController: UINavigationController, productId: Int)
     func pushFavoriteViewController(navigationController: UINavigationController)
@@ -30,7 +31,8 @@ protocol MainPresenterProtocol {
 }
 
 class MainPresenter: MainPresenterProtocol {
-  
+    
+    let monitor = NWPathMonitor()
     var current_page: Int = 1
     var router: MainRouterProtocol?
     var interactor: MainInteractorProtocol?
@@ -48,7 +50,7 @@ class MainPresenter: MainPresenterProtocol {
                 self.view?.isFetchingData = false
                 self.view?.fetchProductsSuccess(productsArray: self.products)
             case .failure:
-                self.view?.checkNetworkConnection()
+                self.view?.failedToFetchProducts()
             }
         })
     }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import Network
 protocol FavoriteInteracorProtocol {
     var presenter: FavoritePresenterProtocol? { get set }
     
@@ -14,18 +14,28 @@ protocol FavoriteInteracorProtocol {
 }
 
 class FavoriteInteracor: FavoriteInteracorProtocol {
+    
     var presenter: FavoritePresenterProtocol?
+    let monitor = NWPathMonitor()
     
     func getSingleProduct (id: Int, completion: @escaping (Result<Product, Error>) -> Void) {
         guard let url = URL(string: "\(Constansts.baseURL)/\(id)") else { return }
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
-            guard let data = data, error == nil else { return }
-            do {
-                let results = try JSONDecoder().decode(Product.self, from: data)
-                //        self.presenter?.getSingleProductSuccess(products: results)
-                completion(.success(results))
-            } catch {
-                completion(.failure(APIError.failedToGetData))
+            if let data = data {
+                do {
+                    let results = try JSONDecoder().decode(Product.self, from: data)
+                    completion(.success(results))
+                } catch {
+                    completion(.failure(APIError.failedToGetData))
+                }
+            }  else if let error = error {
+                self.monitor.pathUpdateHandler = { pathUpdateHandler in
+                    if pathUpdateHandler.status == .satisfied {
+                        APIError.failedToGetData
+                    } else {
+                        print("Error Internet connection")
+                    }
+                }
             }
         }
         task.resume()
