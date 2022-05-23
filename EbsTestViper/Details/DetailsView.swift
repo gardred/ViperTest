@@ -23,7 +23,6 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
     
     // UIElements
     @IBOutlet weak var productDetails: UITableView!
-    
     // Variables
     var cells: [CellType] = []
     var products: Product?

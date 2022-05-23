@@ -99,7 +99,9 @@
                                         <state key="normal" title="" image="heart" catalog="system">
                                             <color key="titleColor" systemColor="systemRedColor"/>
                                         </state>
-                                        <state key="selected" image="heart.fill" catalog="system"/>
+                                        <state key="selected" image="heart.fill" catalog="system">
+                                            <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="18"/>

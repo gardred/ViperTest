@@ -26,7 +26,7 @@ class FavoriteInteracor: FavoriteInteracorProtocol {
                     let results = try JSONDecoder().decode(Product.self, from: data)
                     completion(.success(results))
                 } catch {
-                    completion(.failure(APIError.failedToGetData))
+                completion(.failure(APIError.failedToGetData))
                 }
             }  else if let error = error {
                 self.monitor.pathUpdateHandler = { pathUpdateHandler in

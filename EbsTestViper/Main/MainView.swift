@@ -20,17 +20,24 @@ protocol MainViewProtocol {
 
 class MainViewController: BaseViewController, MainViewProtocol {
     
+    enum CellType {
+        case horizontal
+        case vertical
+    }
+    
     // UIElements
     @IBOutlet weak var productsCollectionView: UICollectionView!
     @IBOutlet weak var cartView: UIView!
     @IBOutlet weak var cartCountLabel: UILabel!
     private let refreshControl = UIRefreshControl()
+    @IBOutlet weak var cartButton: UIButton!
     
     // Variables
     private var products: [Product] = [Product]()
     var isFetchingData = false
     var presenter: MainPresenterProtocol?
-    
+    var changeCell: Bool = false
+    var cells: [CellType] = []
     // Lifecycle
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -40,10 +47,11 @@ class MainViewController: BaseViewController, MainViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        
         presenter?.startFetchingProducts()
-        
+       
+        productsCollectionView.register(SquareProductsCollectionViewCell.nib(), forCellWithReuseIdentifier: SquareProductsCollectionViewCell.identifier)
         productsCollectionView.register(ProductsCollectionViewCell.nib(), forCellWithReuseIdentifier: ProductsCollectionViewCell.identifier)
+        
         productsCollectionView.delegate = self
         productsCollectionView.dataSource = self
         productsCollectionView.refreshControl = refreshControl
@@ -59,6 +67,16 @@ class MainViewController: BaseViewController, MainViewProtocol {
         }
     }
     
+    @IBAction func squareCellSize(_ sender: UIButton) {
+        changeCell = true
+        productsCollectionView.reloadData()
+        
+    }
+    @IBAction func horizontalCell(_ sender: Any) {
+        changeCell = false
+        productsCollectionView.reloadData()
+    }
+ 
     func failedToFetchProducts() {
         let alert = UIAlertController(title: "error", message: "Failed to get products", preferredStyle: .alert)
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)
@@ -91,30 +109,37 @@ class MainViewController: BaseViewController, MainViewProtocol {
         presenter?.startFetchingProducts()
         refreshControl.endRefreshing()
     }
-    
+  
 }
 
 // MARK: ColletionView Extension
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return products.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = productsCollectionView.dequeueReusableCell(withReuseIdentifier: ProductsCollectionViewCell.identifier, for: indexPath) as! ProductsCollectionViewCell
-        let product = products[indexPath.row]
-        cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product))
-        self.presenter?.cacheImage(cell.productImageView)
-        cell.addToFavoriteProduct = { [weak self] (id) in
-            self?.presenter?.toggleFavorite(id: id)
-            
+        
+        if !changeCell {
+            let cell = productsCollectionView.dequeueReusableCell(withReuseIdentifier: ProductsCollectionViewCell.identifier, for: indexPath) as! ProductsCollectionViewCell
+            let product = products[indexPath.row]
+            cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product))
+            self.presenter?.cacheImage(cell.productImageView)
+            cell.addToFavoriteProduct = { [weak self] (id) in
+                self?.presenter?.toggleFavorite(id: id)
+            }
+            return cell
+        } else {
+            let cell = productsCollectionView.dequeueReusableCell(withReuseIdentifier: SquareProductsCollectionViewCell.identifier, for: indexPath) as! SquareProductsCollectionViewCell
+            let product = products[indexPath.row]
+            cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product))
+            self.presenter?.cacheImage(cell.productImageView)
+            cell.addToFavoriteProduct = { [weak self] (id) in
+                self?.presenter?.toggleFavorite(id: id)
+            }
+            return cell
         }
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -132,16 +157,19 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = productsCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ProductsCollectionReusableView", for: indexPath) as! ProductsCollectionReusableView
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var width: CGFloat = 0
+        var height: CGFloat = 0
         
-        headerView.squareCells = { [weak self] in
-            self?.productsCollectionView.reloadData()
+        if !changeCell {
+            width = view.frame.width
+            height = 213
+        } else {
+            width = (view.frame.width / 2) - 20
+            height = 255
         }
-        return headerView
+        
+        return CGSize(width: width, height: height)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 345, height: 213)
-    }
 }
