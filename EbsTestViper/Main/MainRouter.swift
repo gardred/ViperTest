@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 // Router ------> Presenter
+
 protocol MainRouterProtocol {
     static func start() -> MainViewController
     func pushDetailsScreen(navigationController: UINavigationController, productId: Int)
@@ -17,19 +18,20 @@ protocol MainRouterProtocol {
 }
 
 class MainRouter: MainRouterProtocol {
-    func pushAuthentiocationScreen(navigationController: UINavigationController) {
+    
+    public func pushAuthentiocationScreen(navigationController: UINavigationController) {
         let router = AuthentiocationRouter.self
         let authentication = router.createAuthentiocationModule()
         navigationController.pushViewController(authentication, animated: true)
     }
     
-    func pushFavoriteScreen(navigationController: UINavigationController) {
+   public func pushFavoriteScreen(navigationController: UINavigationController) {
         let router = FavoriteRouter.self
         let favorite = router.createFavoriteModule()
         navigationController.pushViewController(favorite, animated: true)
     }
     
-    func pushDetailsScreen(navigationController: UINavigationController, productId: Int) {
+    public func pushDetailsScreen(navigationController: UINavigationController, productId: Int) {
         let router = DetailsRouter.self
         let details = router.createDetailsModule()
         details.presenter?.setup(productId: productId)

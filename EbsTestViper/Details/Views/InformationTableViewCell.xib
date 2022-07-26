@@ -12,12 +12,12 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="474" id="KGk-i7-Jjw" customClass="InformationTableViewCell" customModule="EbsTestViper" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="474"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="474"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="W16-4I-RNX">
-                        <rect key="frame" x="0.0" y="0.0" width="345" height="450"/>
+                        <rect key="frame" x="15" y="0.0" width="345" height="450"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="INFORMATION" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVt-vJ-r9z">
                                 <rect key="frame" x="0.0" y="0.0" width="345" height="41"/>
@@ -36,9 +36,9 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="W16-4I-RNX" secondAttribute="trailing" id="VYU-U9-B7d"/>
+                    <constraint firstAttribute="trailing" secondItem="W16-4I-RNX" secondAttribute="trailing" constant="15" id="VYU-U9-B7d"/>
                     <constraint firstItem="W16-4I-RNX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Xmj-X0-92j"/>
-                    <constraint firstItem="W16-4I-RNX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ZFq-qK-SZN"/>
+                    <constraint firstItem="W16-4I-RNX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="ZFq-qK-SZN"/>
                     <constraint firstAttribute="bottom" secondItem="W16-4I-RNX" secondAttribute="bottom" constant="24" id="yRR-Et-3Sk"/>
                 </constraints>
             </tableViewCellContentView>

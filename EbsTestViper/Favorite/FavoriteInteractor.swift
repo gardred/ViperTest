@@ -28,7 +28,7 @@ class FavoriteInteracor: FavoriteInteracorProtocol {
                 } catch {
                 completion(.failure(APIError.failedToGetData))
                 }
-            }  else if let error = error {
+            } else if let error = error {
                 self.monitor.pathUpdateHandler = { pathUpdateHandler in
                     if pathUpdateHandler.status == .satisfied {
                         APIError.failedToGetData

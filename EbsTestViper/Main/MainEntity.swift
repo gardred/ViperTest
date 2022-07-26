@@ -7,6 +7,7 @@
 
 import Foundation
 import RealmSwift
+
 struct ProductsResponse: Codable {
     let results: [Product]
 }
@@ -29,3 +30,4 @@ enum ConnectionType {
     case ethernet
     case unknown
 }
+

@@ -23,7 +23,7 @@ protocol MainPresenterProtocol {
     func fetchProductsSuccess(products: [Product])
     func cacheImage(_ imageView: UIImageView)
     func toggleFavorite(id: Int)
-//    func checkNetworkConnection()
+    //    func checkNetworkConnection()
     
     func pushDetailsViewController(navigationController: UINavigationController, productId: Int)
     func pushFavoriteViewController(navigationController: UINavigationController)
@@ -32,37 +32,49 @@ protocol MainPresenterProtocol {
 
 class MainPresenter: MainPresenterProtocol {
     
-    let monitor = NWPathMonitor()
-    var current_page: Int = 1
-    var router: MainRouterProtocol?
-    var interactor: MainInteractorProtocol?
-    var view: MainViewProtocol?
-    var products = [Product]()
+    // MARK: - Variables
+    
+    private let monitor = NWPathMonitor()
     private var url = URL(string: Constansts.baseURL)
     
-    func startFetchingProducts() {
+    public var current_page: Int = 1
+    public var router: MainRouterProtocol?
+    public var interactor: MainInteractorProtocol?
+    public var view: MainViewProtocol?
+    public var products: [Product] = []
+    
+    // MARK: - Functions
+    
+    public func startFetchingProducts() {
+        
         interactor?.getProducts(atPage: current_page, completion: { [weak self] (result) in
+            
             guard let self = self else { return }
+            
             switch result {
+                
             case .success(let getProd):
+                
                 self.products.append(contentsOf: getProd)
                 self.current_page += 1
                 self.view?.isFetchingData = false
+                self.view?.hasNoMorePages = getProd.count > 0 
                 self.view?.fetchProductsSuccess(productsArray: self.products)
+                
             case .failure:
                 self.view?.failedToFetchProducts()
             }
         })
     }
     
-    func cacheImage(_ imageView: UIImageView) {
+    public func cacheImage(_ imageView: UIImageView) {
         guard let url = url else { return }
         interactor?.downloadImage(url: url, completion: { image in
             imageView.image = image
         })
     }
-
-    func toggleFavorite(id: Int) {
+    
+    public func toggleFavorite(id: Int) {
         if let product = RealmService.shared.findProduct(id: id) {
             RealmService.shared.removeProduct(productToDelete: product)
         } else {
@@ -71,19 +83,19 @@ class MainPresenter: MainPresenterProtocol {
         }
     }
     
-    func fetchProductsSuccess(products: [Product]) {
+    public func fetchProductsSuccess(products: [Product]) {
         view?.fetchProductsSuccess(productsArray: products)
     }
     
-    func pushFavoriteViewController(navigationController: UINavigationController) {
+    public func pushFavoriteViewController(navigationController: UINavigationController) {
         router?.pushFavoriteScreen(navigationController: navigationController)
     }
     
-    func pushAuthentiocationViewController(navigationController: UINavigationController) {
+    public func pushAuthentiocationViewController(navigationController: UINavigationController) {
         router?.pushAuthentiocationScreen(navigationController: navigationController)
     }
     
-    func pushDetailsViewController(navigationController: UINavigationController, productId: Int) {
+    public func pushDetailsViewController(navigationController: UINavigationController, productId: Int) {
         router?.pushDetailsScreen(navigationController: navigationController, productId: productId )
     }
 }

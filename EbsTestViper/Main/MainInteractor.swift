@@ -18,21 +18,38 @@ protocol MainInteractorProtocol {
     func downloadImage(url: URL, completion: @escaping (UIImage?) -> Void)
 }
 
+// API Errors
+
+
 class MainInteractor: MainInteractorProtocol {
-    let monitor = NWPathMonitor()
+    
+    private let monitor = NWPathMonitor()
+    public var presenter: MainPresenterProtocol?
+    public var imageCache = NSCache<NSString, UIImage>()
+    
+    enum APIError: Error {
+        case failedToGetData
+    }
     
     func getProducts(atPage page: Int, completion: @escaping (Result<[Product], Error>) -> Void) {
+        
         guard let url = URL(string: "\(Constansts.baseURL)?page=\(page)&page_size=10") else { return }
+        
         let dataTast = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+            
             if let data = data {
+                
                 do {
                     let results = try JSONDecoder().decode(ProductsResponse.self, from: data)
                     self.presenter?.fetchProductsSuccess(products: results.results)
                     completion(.success(results.results))
+                
                 } catch {
                     completion(.failure(APIError.failedToGetData))
                 }
+                
             } else if let error = error {
+                
                 self.monitor.pathUpdateHandler = { pathUpdateHandler in
                     if pathUpdateHandler.status == .satisfied {
                         APIError.failedToGetData
@@ -45,34 +62,9 @@ class MainInteractor: MainInteractorProtocol {
         dataTast.resume()
     }
     
-    var presenter: MainPresenterProtocol?
-    var imageCache = NSCache<NSString, UIImage>()
-    // API Errors
-    enum APIError: Error {
-        case failedToGetData
-    }
     
-    // API Call to get all products
-    //    func getProducts(atPage page: Int, completion: @escaping (Result<[Product], Error>) -> Void) {
-    //        guard let url = URL(string: "\(Constansts.baseURL)?page=\(page)&page_size=10") else { return }
-    //        let dataTask = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
-    //            guard let data = data else {
-    //                return
-    //            }
-    //            do {
-    //                if error == nil {
-    //                    let results = try JSONDecoder().decode(ProductsResponse.self, from: data)
-    //                    self.presenter?.fetchProductsSuccess(products: results.results)
-    //                    completion(.success(results.results))
-    //                }
-    //            } catch is APIError {
-    //                completion(.failure(APIError.failedToGetData))
-    //            } catch {
-    //                self.presenter?.view?.checkNetworkConnection()
-    //            }
-    //        }
-    //        dataTask.resume()
-    //    }
+    
+    
     // Cache image
     
     func downloadImage(url: URL, completion: @escaping (UIImage?) -> Void) {
