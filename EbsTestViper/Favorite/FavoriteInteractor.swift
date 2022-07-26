@@ -15,12 +15,15 @@ protocol FavoriteInteracorProtocol {
 
 class FavoriteInteracor: FavoriteInteracorProtocol {
     
-    var presenter: FavoritePresenterProtocol?
-    let monitor = NWPathMonitor()
+    public var presenter: FavoritePresenterProtocol?
+    private let monitor = NWPathMonitor()
     
     func getSingleProduct (id: Int, completion: @escaping (Result<Product, Error>) -> Void) {
+        
         guard let url = URL(string: "\(Constansts.baseURL)/\(id)") else { return }
+        
         let task = URLSession.shared.dataTask(with: URLRequest(url: url)) { data, _, error in
+        
             if let data = data {
                 do {
                     let results = try JSONDecoder().decode(Product.self, from: data)
@@ -28,8 +31,11 @@ class FavoriteInteracor: FavoriteInteracorProtocol {
                 } catch {
                 completion(.failure(APIError.failedToGetData))
                 }
+                
             } else if let error = error {
+                
                 self.monitor.pathUpdateHandler = { pathUpdateHandler in
+                   
                     if pathUpdateHandler.status == .satisfied {
                         APIError.failedToGetData
                     } else {

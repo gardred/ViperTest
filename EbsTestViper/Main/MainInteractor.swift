@@ -62,9 +62,6 @@ class MainInteractor: MainInteractorProtocol {
         dataTast.resume()
     }
     
-    
-    
-    
     // Cache image
     
     func downloadImage(url: URL, completion: @escaping (UIImage?) -> Void) {

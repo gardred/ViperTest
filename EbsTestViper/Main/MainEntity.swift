@@ -30,4 +30,3 @@ enum ConnectionType {
     case ethernet
     case unknown
 }
-

@@ -33,6 +33,7 @@ class FavoriteView: BaseViewController, FavoriteViewProtocol {
         setupNavigationBar()
         
         favoriteList = self.realm?.objects(Product.self)
+        
         configureUI()
         configureTableView()
        
@@ -75,18 +76,25 @@ class FavoriteView: BaseViewController, FavoriteViewProtocol {
     }
 }
 
-extension FavoriteView: UITableViewDelegate, UITableViewDataSource {
+    // MARK: - UITableView Data Source
+
+extension FavoriteView: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return favoriteList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         guard let cell = favoriteProductsTableView.dequeueReusableCell(withIdentifier: ProductsTableViewCell.identifier, for: indexPath) as? ProductsTableViewCell else {
             return UITableViewCell()
         }
+        
         let product = favoriteList[indexPath.row]
         cell.id = product.id
+        
         cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product))
+        
         cell.addToFavoriteProduct = { [weak self] (id) in
             guard let self = self else { return}
             self.presenter?.toggleFavorite(id: id)
@@ -94,6 +102,11 @@ extension FavoriteView: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
+}
+
+    // MARK: - UITableView Delegate
+
+extension FavoriteView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = favoriteList[indexPath.row]

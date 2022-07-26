@@ -11,10 +11,11 @@ import SkeletonView
 class DetailsTableViewCell: UITableViewCell {
    
     static let identifier = "DetailsTableViewCell"
-    @IBOutlet weak var productName: UILabel!
-    @IBOutlet weak var productDetails: UILabel!
-    @IBOutlet weak var productPrice: UILabel!
-    @IBOutlet weak var productSalePrice: UILabel!
+    
+    @IBOutlet private weak var productName: UILabel!
+    @IBOutlet private weak var productDetails: UILabel!
+    @IBOutlet private weak var productPrice: UILabel!
+    @IBOutlet private weak var productSalePrice: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,19 +29,15 @@ class DetailsTableViewCell: UITableViewCell {
     public func configure(with model: Product) {
         
         self.productName.text = model.name
-        self.productName.stopSkeletonAnimation()
         self.productName.hideSkeleton()
         
         self.productDetails.text = model.details
-        self.productDetails.stopSkeletonAnimation()
         self.productDetails.hideSkeleton()
         
         self.productPrice.text = "$\(model.price)"
-        self.productPrice.stopSkeletonAnimation()
         self.productPrice.hideSkeleton()
         
         self.productSalePrice.text = "$\(model.price)"
-        self.productSalePrice.stopSkeletonAnimation()
         self.productSalePrice.hideSkeleton()
     }
     

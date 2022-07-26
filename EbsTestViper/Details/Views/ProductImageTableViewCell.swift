@@ -10,6 +10,7 @@ import SkeletonView
 class ProductImageTableViewCell: UITableViewCell {
     
     static let identifier = "ProductImageTableViewCell"
+    
     @IBOutlet weak var productImageView: UIImageView!
     
     override func awakeFromNib() {

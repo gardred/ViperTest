@@ -12,8 +12,8 @@ class InformationTableViewCell: UITableViewCell {
 
     static let identifier = "InformationTableViewCell"
     
-    @IBOutlet weak var informationLabel: UILabel!
-    @IBOutlet weak var productInformation: UILabel!
+    @IBOutlet private weak var informationLabel: UILabel!
+    @IBOutlet private weak var productInformation: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,15 +25,16 @@ class InformationTableViewCell: UITableViewCell {
     }
     
     public func configure(with model: Product) {
+        
         self.informationLabel.stopSkeletonAnimation()
         self.informationLabel.hideSkeleton()
         
         self.productInformation.text = model.details
-        self.productInformation.stopSkeletonAnimation()
         self.productInformation.hideSkeleton()
     }
     
     public func presentSkeleton() {
+        
         self.informationLabel.isSkeletonable = true
         self.informationLabel.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .silver), animation: nil, transition: .crossDissolve(0.25))
         

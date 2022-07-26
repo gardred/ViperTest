@@ -15,8 +15,10 @@ protocol MainViewProtocol {
     var presenter: MainPresenterProtocol? { get set }
     var isFetchingData: Bool { get set }
     var hasNoMorePages: Bool { get set }
+    
     func fetchProductsSuccess(productsArray: [Product])
     func failedToFetchProducts()
+    
 }
 
 class MainViewController: BaseViewController, MainViewProtocol {
@@ -31,6 +33,7 @@ class MainViewController: BaseViewController, MainViewProtocol {
     @IBOutlet private weak var cartView: UIView!
     @IBOutlet private weak var cartCountLabel: UILabel!
     @IBOutlet private weak var cartButton: UIButton!
+    @IBOutlet private weak var filterButton: UIButton!
     private let refreshControl = UIRefreshControl()
     
     // MARK: - Variables
@@ -62,6 +65,7 @@ class MainViewController: BaseViewController, MainViewProtocol {
     
     private func configureUI() {
         cartButton.setTitle("MY CART".localized(), for: .normal)
+        filterButton.setTitle("FILTER".localized(), for: .normal)
     }
     
     private func configureCollectionView() {
@@ -127,21 +131,21 @@ class MainViewController: BaseViewController, MainViewProtocol {
     // MARK: - IBActions
     
     @IBAction func squareCellSize(_ sender: UIButton) {
-//        viewMode = .vertical
+        //        viewMode = .vertical
         productsCollectionView.reloadData()
         
     }
     
     @IBAction func horizontalCell(_ sender: Any) {
-//        viewMode = .horizontal
+        //        viewMode = .horizontal
         productsCollectionView.reloadData()
     }
     
 }
 
-// MARK: - Colletion View Extension
+// MARK: - Colletion View Extension Data Source
 
-extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension MainViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cells.count
@@ -179,21 +183,33 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return cell
         }
     }
-    
+}
+
+// MARK: - UICollectionView Delegate
+
+extension MainViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let navigationController = navigationController else { return }
         presenter?.pushDetailsViewController(navigationController: navigationController, productId: products[indexPath.row].id)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
         let lastProduct = products.count - 1
         if indexPath.row == lastProduct && !isFetchingData && hasNoMorePages {
             DispatchQueue.main.async { [weak self] in
-                self?.isFetchingData = true
-                self?.presenter?.startFetchingProducts()
+                guard let self = self else { return }
+                
+                self.isFetchingData = true
+                self.presenter?.startFetchingProducts()
             }
         }
     }
+}
+
+// MARK: - UICollectionView FlowLayout
+
+extension MainViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var width: CGFloat = 0

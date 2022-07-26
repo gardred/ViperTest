@@ -27,6 +27,7 @@ class AuthenticationView: BaseViewController, AuthenticationViewProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupNavigationBar()
         
         let loginButton = FBLoginButton(frame: CGRect(x: 0, y: 0, width: 250, height: 60))
@@ -34,7 +35,7 @@ class AuthenticationView: BaseViewController, AuthenticationViewProtocol {
         loginButton.center = view.center
         loginButton.permissions = ["public_profile", "email"]
         view.addSubview(loginButton)
-        
+        googleButton.setTitle("Google Sign In".localized(), for: .normal)
         presenter?.loginWithFacebook()
         userNameLabel.text = ""
     }

@@ -12,16 +12,16 @@ class ProductsCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "ProductsCollectionViewCell"
     
-    @IBOutlet weak var productImageView: UIImageView!
-    @IBOutlet weak var productName: UILabel!
-    @IBOutlet weak var productDetails: UILabel!
-    @IBOutlet weak var productPrice: UILabel!
-    @IBOutlet weak var productSalePrice: UILabel!
-    @IBOutlet weak var favButton: UIButton!
-    @IBOutlet weak var cartButton: UIButton!
+    @IBOutlet public weak var productImageView: UIImageView!
+    @IBOutlet private weak var productName: UILabel!
+    @IBOutlet private weak var productDetails: UILabel!
+    @IBOutlet private weak var productPrice: UILabel!
+    @IBOutlet private weak var productSalePrice: UILabel!
+    @IBOutlet private weak var favButton: UIButton!
+    @IBOutlet private weak var cartButton: UIButton!
     
-    var addToFavoriteProduct: ((_ id: Int) -> Void) = { _ in }
-    var id: Int = 0
+    public var addToFavoriteProduct: ((_ id: Int) -> Void) = { _ in }
+    public var id: Int = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,7 +29,9 @@ class ProductsCollectionViewCell: UICollectionViewCell {
     }
     
     @IBAction func markAsFavorite(_ sender: UIButton) {
+        
         self.addToFavoriteProduct(self.id)
+        
         if self.favButton.isSelected == false {
             self.favButton.isSelected = true
             self.favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
@@ -46,6 +48,7 @@ class ProductsCollectionViewCell: UICollectionViewCell {
         self.productPrice.text = "$\(model.price)"
         self.productSalePrice.text = "$\(model.price)"
         self.productImageView.sd_setImage(with: URL(string: model.main_image))
+        
         if isFavorite {
             self.favButton.isSelected = true
             self.favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
