@@ -58,13 +58,13 @@
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nnH-qf-xN2">
                                         <rect key="frame" x="360" y="9" width="23" height="23"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="23" id="Uw5-R3-E0h"/>
                                             <constraint firstAttribute="height" constant="23" id="nkz-As-mAR"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="16"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="_clipsToBounds" value="YES"/>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -104,8 +104,11 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BH3-GT-IXW">
                                         <rect key="frame" x="10" y="10" width="94" height="32"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="Filters"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="Filters">
+                                            <color key="baseForegroundColor" systemColor="systemYellowColor"/>
+                                        </buttonConfiguration>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fnw-Hn-bbs">
                                         <rect key="frame" x="363" y="4" width="55" height="45"/>
@@ -180,12 +183,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="0OM-hu-Eum">
-                                <rect key="frame" x="0.0" y="88" width="428" height="753"/>
+                                <rect key="frame" x="0.0" y="84" width="428" height="761"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bit-AY-aZu">
-                                <rect key="frame" x="0.0" y="841" width="428" height="85"/>
+                                <rect key="frame" x="0.0" y="845" width="428" height="81"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d31-sS-kS8">
                                         <rect key="frame" x="17" y="12" width="167" height="41"/>
@@ -280,9 +283,11 @@
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pvt-CL-yjf">
                                             <rect key="frame" x="369" y="26" width="44" height="7"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <color key="tintColor" red="0.027450980392156862" green="0.098039215686274508" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
                                             <state key="normal" title="Button"/>
                                             <buttonConfiguration key="configuration" style="plain" image="chevron.down" catalog="system" title="">
-                                                <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="baseForegroundColor" red="0.027450980390000001" green="0.098039215690000001" blue="0.36078431370000003" alpha="1" colorSpace="calibratedRGB"/>
                                             </buttonConfiguration>
                                         </button>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJ5-39-rSm">
@@ -321,8 +326,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="04d-j7-G54"/>
                     <connections>
+                        <outlet property="favoriteLabel" destination="aJx-oO-uZ9" id="C22-Ww-aFV"/>
                         <outlet property="favoriteProductsCount" destination="hJ5-39-rSm" id="RrS-jX-m9K"/>
                         <outlet property="favoriteProductsTableView" destination="9hF-nL-t43" id="arQ-1T-KA6"/>
+                        <outlet property="sortByLabel" destination="5mU-R3-lyI" id="g4w-Oy-obC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HkI-XK-QmA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -399,6 +406,9 @@
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

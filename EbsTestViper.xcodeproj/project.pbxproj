@@ -87,6 +87,8 @@
 		F17C42E9288FC1B000626994 /* ProductsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C42E5288FC1B000626994 /* ProductsCollectionViewCell.swift */; };
 		F17C42EC288FC1E700626994 /* ProductsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F17C42EB288FC1E700626994 /* ProductsTableViewCell.xib */; };
 		F17C42EE288FC1F000626994 /* ProductsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F17C42ED288FC1F000626994 /* ProductsTableViewCell.swift */; };
+		F18BD30A28900743009E0680 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18BD30928900743009E0680 /* String.swift */; };
+		F18BD30E289008D0009E0680 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = F18BD310289008D0009E0680 /* Localizable.strings */; };
 		F1AC49EC2825401900D22962 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1AC49EB2825401900D22962 /* credentials.plist */; };
 		F1AC49EE28255DF400D22962 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC49ED28255DF400D22962 /* BaseViewController.swift */; };
 		F1AC49F02825658100D22962 /* HexColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC49EF2825658100D22962 /* HexColorExtension.swift */; };
@@ -177,6 +179,10 @@
 		F17C42E5288FC1B000626994 /* ProductsCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductsCollectionViewCell.swift; sourceTree = "<group>"; };
 		F17C42EB288FC1E700626994 /* ProductsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductsTableViewCell.xib; sourceTree = "<group>"; };
 		F17C42ED288FC1F000626994 /* ProductsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProductsTableViewCell.swift; path = "EbsTestViper/Favorite/New Group/ProductsTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
+		F18BD30928900743009E0680 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		F18BD30B2890087E009E0680 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		F18BD30F289008D0009E0680 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F18BD311289008D8009E0680 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		F1AC49EB2825401900D22962 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 		F1AC49ED28255DF400D22962 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		F1AC49EF2825658100D22962 /* HexColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColorExtension.swift; sourceTree = "<group>"; };
@@ -217,6 +223,7 @@
 				F11C3229282567290056B4F3 /* Utilities */,
 				F1AC49EF2825658100D22962 /* HexColorExtension.swift */,
 				F16723302822AB9600ADFBB7 /* CornerRadiusExtension.swift */,
+				F18BD30928900743009E0680 /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -272,6 +279,7 @@
 				F12479D5282139E500D4325C /* Details */,
 				F12479D3282139D500D4325C /* Main */,
 				F10B5996282BE2A200EC86A3 /* RealmService.swift */,
+				F18BD310289008D0009E0680 /* Localizable.strings */,
 			);
 			path = EbsTestViper;
 			sourceTree = "<group>";
@@ -492,6 +500,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = F12479B22821394F00D4325C;
 			productRefGroup = F12479BC2821395000D4325C /* Products */;
@@ -542,6 +551,7 @@
 				F1672310282255AC00ADFBB7 /* OpenSans_SemiCondensed-ExtraBold.ttf in Resources */,
 				F1672320282255AC00ADFBB7 /* OpenSans_Condensed-Italic.ttf in Resources */,
 				F1672319282255AC00ADFBB7 /* OpenSans_Condensed-Bold.ttf in Resources */,
+				F18BD30E289008D0009E0680 /* Localizable.strings in Resources */,
 				F167230E282255AC00ADFBB7 /* OpenSans_SemiCondensed-SemiBold.ttf in Resources */,
 				F167232F282255AC00ADFBB7 /* OpenSans-VariableFont_wdth,wght.ttf in Resources */,
 				F1672325282255AC00ADFBB7 /* OpenSans-ExtraBold.ttf in Resources */,
@@ -639,6 +649,7 @@
 				F12479FA28213B2000D4325C /* FavoritePresenter.swift in Sources */,
 				F12479F828213B1400D4325C /* FavoriteInteractor.swift in Sources */,
 				F12479FE28213B3700D4325C /* FavoriteRouter.swift in Sources */,
+				F18BD30A28900743009E0680 /* String.swift in Sources */,
 				F1247A142821579900D4325C /* InformationTableViewCell.swift in Sources */,
 				F17C42EE288FC1F000626994 /* ProductsTableViewCell.swift in Sources */,
 				F12479DC28213A3E00D4325C /* MainPresenter.swift in Sources */,
@@ -669,6 +680,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				F12479C52821395000D4325C /* Base */,
+				F18BD30B2890087E009E0680 /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -681,6 +693,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		F18BD310289008D0009E0680 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F18BD30F289008D0009E0680 /* en */,
+				F18BD311289008D8009E0680 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -688,6 +709,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -748,6 +770,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";

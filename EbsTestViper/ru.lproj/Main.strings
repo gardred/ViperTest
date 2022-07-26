@@ -1,0 +1,51 @@
+
+/* Class = "UILabel"; text = "SORT BY"; ObjectID = "5mU-R3-lyI"; */
+"5mU-R3-lyI.text" = "SORT BY";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "BH3-GT-IXW"; */
+"BH3-GT-IXW.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "Google Sign In "; ObjectID = "Cxk-gl-2rB"; */
+"Cxk-gl-2rB.configuration.title" = "Google Sign In ";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Cxk-gl-2rB"; */
+"Cxk-gl-2rB.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Fnw-Hn-bbs"; */
+"Fnw-Hn-bbs.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "W1H-ES-qiu"; */
+"W1H-ES-qiu.text" = "Label";
+
+/* Class = "UIButton"; configuration.title = "BUY NOW"; ObjectID = "XKc-20-xCp"; */
+"XKc-20-xCp.configuration.title" = "BUY NOW";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "XKc-20-xCp"; */
+"XKc-20-xCp.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "FAVORITES"; ObjectID = "aJx-oO-uZ9"; */
+"aJx-oO-uZ9.text" = "FAVORITES";
+
+/* Class = "UIButton"; configuration.title = "ADD TO CART"; ObjectID = "d31-sS-kS8"; */
+"d31-sS-kS8.configuration.title" = "ADD TO CART";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "d31-sS-kS8"; */
+"d31-sS-kS8.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "fg3-CG-0Ce"; */
+"fg3-CG-0Ce.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "hJ5-39-rSm"; */
+"hJ5-39-rSm.text" = "0";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "nnH-qf-xN2"; */
+"nnH-qf-xN2.text" = "0";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "pvt-CL-yjf"; */
+"pvt-CL-yjf.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "MY CART"; ObjectID = "rro-tF-ppZ"; */
+"rro-tF-ppZ.configuration.title" = "MY CART";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "rro-tF-ppZ"; */
+"rro-tF-ppZ.normalTitle" = "Button";

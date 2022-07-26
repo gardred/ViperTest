@@ -23,19 +23,19 @@ class FavoriteView: BaseViewController, FavoriteViewProtocol {
     // UIElements
     @IBOutlet weak var favoriteProductsTableView: UITableView!
     @IBOutlet weak var favoriteProductsCount: UILabel!
+    @IBOutlet weak var favoriteLabel: UILabel!
+    
+    @IBOutlet weak var sortByLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         setupNavigationBar()
         
         favoriteList = self.realm?.objects(Product.self)
-        
-        favoriteProductsTableView.register(ProductsTableViewCell.nib(), forCellReuseIdentifier: ProductsTableViewCell.identifier)
-        favoriteProductsTableView.dataSource = self
-        favoriteProductsTableView.delegate = self
-        favoriteProductsCount.text = "\(favoriteList.count)"
-        favoriteProductsCount.layer.cornerRadius = favoriteProductsCount.frame.height / 2
-        
+        configureUI()
+        configureTableView()
+       
         notificationToken = favoriteList.observe({ [weak self] changes in
             guard let tableView = self?.favoriteProductsTableView else { return }
             switch changes {
@@ -51,6 +51,21 @@ class FavoriteView: BaseViewController, FavoriteViewProtocol {
             }
         })
         favoriteProductsTableView.reloadData()
+    }
+    
+    private func configureUI() {
+        favoriteLabel.text = "FAVORITES".localized()
+        sortByLabel.text = "SORT BY".localized()
+        
+        favoriteProductsCount.text = "\(favoriteList.count)"
+        favoriteProductsCount.layer.cornerRadius = favoriteProductsCount.frame.height / 2
+    }
+    
+    private func configureTableView() {
+        
+        favoriteProductsTableView.register(ProductsTableViewCell.nib(), forCellReuseIdentifier: ProductsTableViewCell.identifier)
+        favoriteProductsTableView.dataSource = self
+        favoriteProductsTableView.delegate = self
     }
     
     func setupNavigationBar() {

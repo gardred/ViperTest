@@ -52,13 +52,17 @@ class MainViewController: BaseViewController, MainViewProtocol {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
+        configureUI()
         setupNavigationBar()
         presenter?.startFetchingProducts()
         configureCollectionView()
     }
     
     // MARK: - Functions
+    
+    private func configureUI() {
+        cartButton.setTitle("MY CART".localized(), for: .normal)
+    }
     
     private func configureCollectionView() {
         
@@ -93,6 +97,7 @@ class MainViewController: BaseViewController, MainViewProtocol {
     }
     
     private func setupNavigationBar() {
+        
         setRightBarButtonHeart()
         setLogo()
         setLeftBarButtonPreson()
