@@ -55,11 +55,11 @@ class DetailsPresenter: DetailsPresenterProtocol {
     }
     
     func toggleFavorite(id: Int) {
-            if let product = RealmService.shared.findProduct(id: id) {
-                RealmService.shared.removeProduct(productToDelete: product)
+        if let product = RealmService.shared.findProduct(id: id, realm: RealmService.shared.realm) {
+            RealmService.shared.removeProduct(productToDelete: product, realm: RealmService.shared.realm)
             } else {
                 guard let product = singleProduct else { return }
-                RealmService.shared.addProduct(with: product)
+                RealmService.shared.addProduct(with: product, realm: RealmService.shared.realm)
             }
     }
     

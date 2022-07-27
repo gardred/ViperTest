@@ -7,6 +7,7 @@
 
 import Foundation
 import Network
+
 protocol FavoriteInteracorProtocol {
     var presenter: FavoritePresenterProtocol? { get set }
     

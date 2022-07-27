@@ -21,6 +21,8 @@ class ProductsCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var cartButton: UIButton!
     
     public var addToFavoriteProduct: ((_ id: Int) -> Void) = { _ in }
+    public var addToCartProduct: ((_ id: Int) -> Void) = { _ in }
+    
     public var id: Int = 0
     
     override func awakeFromNib() {
@@ -38,6 +40,19 @@ class ProductsCollectionViewCell: UICollectionViewCell {
         } else {
             self.favButton.isSelected = false
             self.favButton.backgroundColor = .white
+        }
+    }
+    
+    @IBAction func addToCart(_ sender: UIButton) {
+        
+        self.addToCartProduct(self.id)
+        
+        if self.cartButton.isSelected == false {
+            self.cartButton.isSelected = true
+            self.cartButton.backgroundColor = hexStringToUIColor(hex: "#07195C")
+        } else {
+            self.cartButton.isSelected = false
+            self.cartButton.backgroundColor = .white
         }
     }
     

@@ -23,15 +23,18 @@ protocol MainPresenterProtocol {
     func fetchProductsSuccess(products: [Product])
     func cacheImage(_ imageView: UIImageView)
     func toggleFavorite(id: Int)
-    //    func checkNetworkConnection()
+    func toggleCart(id: Int)
     
     func pushDetailsViewController(navigationController: UINavigationController, productId: Int)
     func pushFavoriteViewController(navigationController: UINavigationController)
     func pushAuthentiocationViewController(navigationController: UINavigationController)
+    func pushCartViewController(navigationController: UINavigationController)
 }
 
 class MainPresenter: MainPresenterProtocol {
+  
     
+   
     // MARK: - Variables
     
     private let monitor = NWPathMonitor()
@@ -75,14 +78,24 @@ class MainPresenter: MainPresenterProtocol {
     }
     
     public func toggleFavorite(id: Int) {
-        if let product = RealmService.shared.findProduct(id: id) {
-            RealmService.shared.removeProduct(productToDelete: product)
+       
+        if let product = RealmService.shared.findProduct(id: id, realm: RealmService.shared.realm) {
+            RealmService.shared.removeProduct(productToDelete: product, realm: RealmService.shared.realm)
         } else {
             guard let product = products.first(where: { $0.id == id }) else { return }
-            RealmService.shared.addProduct(with: product)
+            RealmService.shared.addProduct(with: product, realm: RealmService.shared.realm)
         }
     }
     
+    func toggleCart(id: Int) {
+        if let product = RealmService.shared.findProduct(id: id, realm: RealmService.shared.cartRealm) {
+            RealmService.shared.removeProduct(productToDelete: product, realm: RealmService.shared.cartRealm)
+        } else {
+            guard let product = products.first(where: { $0.id == id }) else { return }
+            RealmService.shared.addProduct(with: product, realm: RealmService.shared.cartRealm)
+        }
+    }
+
     public func fetchProductsSuccess(products: [Product]) {
         view?.fetchProductsSuccess(productsArray: products)
     }
@@ -97,5 +110,9 @@ class MainPresenter: MainPresenterProtocol {
     
     public func pushDetailsViewController(navigationController: UINavigationController, productId: Int) {
         router?.pushDetailsScreen(navigationController: navigationController, productId: productId )
+    }
+    
+    public func pushCartViewController(navigationController: UINavigationController) {
+        router?.pushCartScreen(navigationController: navigationController)
     }
 }

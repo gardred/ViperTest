@@ -25,6 +25,11 @@ class MainViewController: BaseViewController, MainViewProtocol {
     
     enum CellType {
         case horizontal(Product)
+        case vertical(Product)
+    }
+    
+    enum ViewMode {
+        case horizontal
         case vertical
     }
     
@@ -40,21 +45,20 @@ class MainViewController: BaseViewController, MainViewProtocol {
     private var products: [Product] = []
     private var changeCell: Bool = false
     private var cells: [CellType] = []
-    
+    private var viewMode: ViewMode = .horizontal
+   
     public var hasNoMorePages = false
     public var isFetchingData = false
     public var presenter: MainPresenterProtocol?
+  
+    private var cartList: Results<Product>!
+    private let realm = try? Realm(configuration: RealmService.shared.favoriteDataConfiguration(with: "cart.realm"))
     // MARK: - Lifecycle
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        productsCollectionView.reloadData()
-    }
-    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
+        
+        cartList = self.realm?.objects(Product.self)
         configureUI()
         setupNavigationBar()
         presenter?.startFetchingProducts()
@@ -63,7 +67,17 @@ class MainViewController: BaseViewController, MainViewProtocol {
     
     // MARK: - Functions
     
+    private func setupNavigationBar() {
+        
+        setRightBarButtonHeart()
+        setLogo()
+        setLeftBarButtonPreson()
+        navigationItem.leftBarButtonItem?.action = #selector(navigationToAuthentiocationScreen)
+        navigationItem.rightBarButtonItem?.action = #selector(navigationToFavoriteScreen)
+    }
+    
     private func configureUI() {
+        cartCountLabel.text = "\(cartList.count)"
         cartButton.setTitle("MY CART".localized(), for: .normal)
         filterButton.setTitle("FILTER".localized(), for: .normal)
     }
@@ -80,16 +94,33 @@ class MainViewController: BaseViewController, MainViewProtocol {
         refreshControl.addTarget(self, action: #selector(pullUpRefreshControl), for: .valueChanged)
     }
     
+    private func prepareStructure(with viewMode: ViewMode) {
+       
+        self.viewMode = viewMode
+        
+        switch viewMode {
+            
+        case .horizontal:
+            
+            cells = []
+            cells.append(contentsOf: products.map({ .horizontal($0) }))
+        
+        case .vertical:
+            
+            cells = []
+            cells.append(contentsOf: products.map({ .vertical($0) }))
+        }
+        
+        DispatchQueue.main.async {
+            self.productsCollectionView.reloadData()
+        }
+        
+    }
+    
     public func fetchProductsSuccess(productsArray: [Product]) {
         
         products = productsArray
-        
-        cells = []
-        cells.append(contentsOf: products.map({ .horizontal($0) }))
-        
-        DispatchQueue.main.async { [weak self] in
-            self?.productsCollectionView.reloadData()
-        }
+        prepareStructure(with: self.viewMode)
     }
     
     public func failedToFetchProducts() {
@@ -98,15 +129,6 @@ class MainViewController: BaseViewController, MainViewProtocol {
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(cancel)
         self.present(alert, animated: true)
-    }
-    
-    private func setupNavigationBar() {
-        
-        setRightBarButtonHeart()
-        setLogo()
-        setLeftBarButtonPreson()
-        navigationItem.leftBarButtonItem?.action = #selector(navigationToAuthentiocationScreen)
-        navigationItem.rightBarButtonItem?.action = #selector(navigationToFavoriteScreen)
     }
     
     @objc private func navigationToFavoriteScreen() {
@@ -130,17 +152,18 @@ class MainViewController: BaseViewController, MainViewProtocol {
     
     // MARK: - IBActions
     
+    @IBAction func cartAction(_ sender: UIButton) {
+        guard let navigationController = navigationController else { return }
+        presenter?.pushCartViewController(navigationController: navigationController)
+    }
+    
     @IBAction func squareCellSize(_ sender: UIButton) {
-        //        viewMode = .vertical
-        productsCollectionView.reloadData()
-        
+        prepareStructure(with: .vertical)
     }
     
     @IBAction func horizontalCell(_ sender: Any) {
-        //        viewMode = .horizontal
-        productsCollectionView.reloadData()
+        prepareStructure(with: .horizontal)
     }
-    
 }
 
 // MARK: - Colletion View Extension Data Source
@@ -160,11 +183,17 @@ extension MainViewController: UICollectionViewDataSource {
             let cell = productsCollectionView.dequeueReusableCell(withReuseIdentifier: ProductsCollectionViewCell.identifier, for: indexPath) as! ProductsCollectionViewCell
             
             let product = products[indexPath.row]
-            cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product))
+            
+            cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product, realm: RealmService.shared.realm))
             
             self.presenter?.cacheImage(cell.productImageView)
+            
             cell.addToFavoriteProduct = { [weak self] (id) in
                 self?.presenter?.toggleFavorite(id: id)
+            }
+            
+            cell.addToCartProduct = { [weak self] (id) in
+                self?.presenter?.toggleCart(id: id)
             }
             return cell
             
@@ -173,7 +202,7 @@ extension MainViewController: UICollectionViewDataSource {
             let cell = productsCollectionView.dequeueReusableCell(withReuseIdentifier: SquareProductsCollectionViewCell.identifier, for: indexPath) as! SquareProductsCollectionViewCell
             
             let product = products[indexPath.row]
-            cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product))
+            cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product, realm: RealmService.shared.realm))
             
             self.presenter?.cacheImage(cell.productImageView)
             

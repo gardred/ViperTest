@@ -15,7 +15,7 @@ protocol FavoriteViewProtocol {
 
 class FavoriteView: BaseViewController, FavoriteViewProtocol {
     
-    let realm = try? Realm()
+    let realm = try? Realm(configuration: RealmService.shared.favoriteDataConfiguration(with: "favorite.realm"))
     var presenter: FavoritePresenterProtocol?
     var favoriteList: Results<Product>!
     var notificationToken: NotificationToken?
@@ -36,7 +36,9 @@ class FavoriteView: BaseViewController, FavoriteViewProtocol {
         
         configureUI()
         configureTableView()
-       
+        print("""
+                \(realm?.configuration.fileURL)
+              """)
         notificationToken = favoriteList.observe({ [weak self] changes in
             guard let tableView = self?.favoriteProductsTableView else { return }
             switch changes {
@@ -93,7 +95,7 @@ extension FavoriteView: UITableViewDataSource {
         let product = favoriteList[indexPath.row]
         cell.id = product.id
         
-        cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product))
+        cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product, realm: RealmService.shared.realm))
         
         cell.addToFavoriteProduct = { [weak self] (id) in
             guard let self = self else { return}

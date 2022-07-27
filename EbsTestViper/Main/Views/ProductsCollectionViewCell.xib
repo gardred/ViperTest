@@ -125,14 +125,14 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fq7-7R-eIX">
                                         <rect key="frame" x="44" y="0.0" width="36" height="36"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="36" id="5t0-e4-uya"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="cart" catalog="system" title="">
-                                            <color key="baseForegroundColor" red="0.094117647060000004" green="0.15686274510000001" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </buttonConfiguration>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="" image="cart" catalog="system">
+                                            <color key="titleColor" red="0.094117647060000004" green="0.15686274510000001" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="selected" image="Vector"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="18"/>
@@ -150,6 +150,9 @@
                                                 <size key="value" width="1" height="1"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="addToCart:" destination="gTV-IL-0wX" eventType="touchUpInside" id="8v2-9y-pqv"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -157,8 +160,8 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UIk-ss-9fQ">
-                        <rect key="frame" x="0.0" y="238" width="346" height="1"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <rect key="frame" x="15" y="238" width="316" height="1"/>
+                        <color key="backgroundColor" white="0.90000000000000002" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="YEq-ga-wvW"/>
                         </constraints>
@@ -170,10 +173,10 @@
             <constraints>
                 <constraint firstItem="IWb-KF-N4y" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="20" id="Fh0-RO-vDc"/>
                 <constraint firstAttribute="bottom" secondItem="IWb-KF-N4y" secondAttribute="bottom" constant="20" id="WGZ-aT-q6o"/>
-                <constraint firstAttribute="trailing" secondItem="UIk-ss-9fQ" secondAttribute="trailing" id="ZEj-3k-PJc"/>
+                <constraint firstAttribute="trailing" secondItem="UIk-ss-9fQ" secondAttribute="trailing" constant="15" id="ZEj-3k-PJc"/>
                 <constraint firstItem="UIk-ss-9fQ" firstAttribute="top" secondItem="IWb-KF-N4y" secondAttribute="bottom" constant="10" id="aZm-f7-EDM"/>
                 <constraint firstAttribute="trailing" secondItem="IWb-KF-N4y" secondAttribute="trailing" constant="20" id="gU3-IL-Gaw"/>
-                <constraint firstItem="UIk-ss-9fQ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="qDd-Dp-ixF"/>
+                <constraint firstItem="UIk-ss-9fQ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="qDd-Dp-ixF"/>
                 <constraint firstItem="IWb-KF-N4y" firstAttribute="leading" secondItem="oQa-GY-cqQ" secondAttribute="trailing" constant="8" id="wPd-Tk-99Q"/>
             </constraints>
             <size key="customSize" width="346" height="248"/>
@@ -190,6 +193,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="Vector" width="18" height="20"/>
         <image name="cart" catalog="system" width="128" height="102"/>
         <image name="heart" catalog="system" width="128" height="109"/>
         <image name="heart.fill" catalog="system" width="128" height="109"/>

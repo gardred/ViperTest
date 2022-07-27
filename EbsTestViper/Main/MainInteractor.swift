@@ -20,7 +20,6 @@ protocol MainInteractorProtocol {
 
 // API Errors
 
-
 class MainInteractor: MainInteractorProtocol {
     
     private let monitor = NWPathMonitor()

@@ -15,9 +15,16 @@ protocol MainRouterProtocol {
     func pushDetailsScreen(navigationController: UINavigationController, productId: Int)
     func pushFavoriteScreen(navigationController: UINavigationController)
     func pushAuthentiocationScreen(navigationController: UINavigationController)
+    func pushCartScreen(navigationController: UINavigationController)
 }
 
 class MainRouter: MainRouterProtocol {
+    
+    func pushCartScreen(navigationController: UINavigationController) {
+        let router = CartRouter.self
+        let cart = router.createCartModule()
+        navigationController.pushViewController(cart, animated: true)
+    }
     
     public func pushAuthentiocationScreen(navigationController: UINavigationController) {
         let router = AuthentiocationRouter.self

@@ -18,10 +18,10 @@ protocol DetailsViewProtocol {
 
 class DetailsView: BaseViewController, DetailsViewProtocol {
     
-    //MARK: - UIElements
+    // MARK: - UIElements
     @IBOutlet private weak var productDetails: UITableView!
     
-    //MARK: - Variables
+    // MARK: - Variables
     var cells: [CellType] = []
     var products: Product?
     var presenter: DetailsPresenterProtocol?
@@ -46,7 +46,7 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
         configureTableView()
     }
     
-    //MARK: - Functions
+    // MARK: - Functions
     
     private func setupNavigationBar() {
         
@@ -71,7 +71,7 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
       
         if let products = products {
             presenter?.toggleFavorite(id: products.id)
-            let contains = RealmService.shared.checkRealmElements(products: products)
+            let contains = RealmService.shared.checkRealmElements(products: products, realm: RealmService.shared.realm)
             
             if contains {
                 navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
@@ -84,7 +84,7 @@ class DetailsView: BaseViewController, DetailsViewProtocol {
     private func checkFavoriteInRealm() {
         
         if let products = products {
-            let contains = RealmService.shared.checkRealmElements(products: products)
+            let contains = RealmService.shared.checkRealmElements(products: products, realm: RealmService.shared.realm)
             
             if contains {
                 navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
@@ -162,8 +162,6 @@ extension DetailsView: UITableViewDataSource {
             return cell
         }
     }
-    
-
 }
 
     // MARK: - UITableview Delegate

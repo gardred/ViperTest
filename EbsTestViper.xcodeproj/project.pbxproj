@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		0E4A7F1A8D85599D5C634A57 /* Pods_EbsTestViper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 747021E79C9AD05542BF3942 /* Pods_EbsTestViper.framework */; };
 		F10B5997282BE2A200EC86A3 /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10B5996282BE2A200EC86A3 /* RealmService.swift */; };
+		F121903228911BC6008CA55D /* CartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F121903128911BC6008CA55D /* CartVC.swift */; };
+		F121903428911BDC008CA55D /* CartInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F121903328911BDC008CA55D /* CartInteractor.swift */; };
+		F121903628911BE9008CA55D /* CartPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F121903528911BE9008CA55D /* CartPresenter.swift */; };
+		F121903828911BF9008CA55D /* CartEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = F121903728911BF9008CA55D /* CartEntity.swift */; };
+		F121903A28911C03008CA55D /* CartRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F121903928911C03008CA55D /* CartRouter.swift */; };
+		F121903E28911F8B008CA55D /* CartTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F121903C28911F8B008CA55D /* CartTVC.swift */; };
+		F121903F28911F8B008CA55D /* CartTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = F121903D28911F8B008CA55D /* CartTVC.xib */; };
 		F12479BF2821395000D4325C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12479BE2821395000D4325C /* AppDelegate.swift */; };
 		F12479C12821395000D4325C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12479C02821395000D4325C /* SceneDelegate.swift */; };
 		F12479C62821395000D4325C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F12479C42821395000D4325C /* Main.storyboard */; };
@@ -99,6 +106,13 @@
 		8EA01CE3B99518BC41AE0E93 /* Pods-EbsTestViper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EbsTestViper.debug.xcconfig"; path = "Target Support Files/Pods-EbsTestViper/Pods-EbsTestViper.debug.xcconfig"; sourceTree = "<group>"; };
 		B0782BDAB757B78E08A0EC3F /* Pods-EbsTestViper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EbsTestViper.release.xcconfig"; path = "Target Support Files/Pods-EbsTestViper/Pods-EbsTestViper.release.xcconfig"; sourceTree = "<group>"; };
 		F10B5996282BE2A200EC86A3 /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
+		F121903128911BC6008CA55D /* CartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVC.swift; sourceTree = "<group>"; };
+		F121903328911BDC008CA55D /* CartInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartInteractor.swift; sourceTree = "<group>"; };
+		F121903528911BE9008CA55D /* CartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPresenter.swift; sourceTree = "<group>"; };
+		F121903728911BF9008CA55D /* CartEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartEntity.swift; sourceTree = "<group>"; };
+		F121903928911C03008CA55D /* CartRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartRouter.swift; sourceTree = "<group>"; };
+		F121903C28911F8B008CA55D /* CartTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTVC.swift; sourceTree = "<group>"; };
+		F121903D28911F8B008CA55D /* CartTVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CartTVC.xib; sourceTree = "<group>"; };
 		F12479BB2821395000D4325C /* EbsTestViper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EbsTestViper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F12479BE2821395000D4325C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F12479C02821395000D4325C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -247,6 +261,28 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		F121903028911BAA008CA55D /* Cart */ = {
+			isa = PBXGroup;
+			children = (
+				F121903B28911F6F008CA55D /* Views */,
+				F121903128911BC6008CA55D /* CartVC.swift */,
+				F121903328911BDC008CA55D /* CartInteractor.swift */,
+				F121903528911BE9008CA55D /* CartPresenter.swift */,
+				F121903728911BF9008CA55D /* CartEntity.swift */,
+				F121903928911C03008CA55D /* CartRouter.swift */,
+			);
+			path = Cart;
+			sourceTree = "<group>";
+		};
+		F121903B28911F6F008CA55D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F121903C28911F8B008CA55D /* CartTVC.swift */,
+				F121903D28911F8B008CA55D /* CartTVC.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		F12479B22821394F00D4325C = {
 			isa = PBXGroup;
 			children = (
@@ -268,6 +304,7 @@
 		F12479BD2821395000D4325C /* EbsTestViper */ = {
 			isa = PBXGroup;
 			children = (
+				F121903028911BAA008CA55D /* Cart */,
 				F12479CC2821395500D4325C /* Info.plist */,
 				F12479C42821395000D4325C /* Main.storyboard */,
 				F12479C92821395500D4325C /* LaunchScreen.storyboard */,
@@ -544,6 +581,7 @@
 				F1672317282255AC00ADFBB7 /* OpenSans_Condensed-SemiBold.ttf in Resources */,
 				F1672313282255AC00ADFBB7 /* OpenSans_SemiCondensed-BoldItalic.ttf in Resources */,
 				F167230A282255AC00ADFBB7 /* OpenSans_SemiCondensed-Regular.ttf in Resources */,
+				F121903F28911F8B008CA55D /* CartTVC.xib in Resources */,
 				F12479C82821395500D4325C /* Assets.xcassets in Resources */,
 				F167231C282255AC00ADFBB7 /* OpenSans_Condensed-BoldItalic.ttf in Resources */,
 				F1672327282255AC00ADFBB7 /* OpenSans-Bold.ttf in Resources */,
@@ -638,17 +676,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				F12479EA28213AC300D4325C /* AuthenticationRouter.swift in Sources */,
+				F121903828911BF9008CA55D /* CartEntity.swift in Sources */,
 				F1AC49F02825658100D22962 /* HexColorExtension.swift in Sources */,
 				F1247A0C2821576400D4325C /* ProductImageTableViewCell.swift in Sources */,
 				F12479EC28213ACF00D4325C /* DetailsView.swift in Sources */,
 				F12479F228213AF200D4325C /* DetailsEntity.swift in Sources */,
 				F1AC49EE28255DF400D22962 /* BaseViewController.swift in Sources */,
+				F121903428911BDC008CA55D /* CartInteractor.swift in Sources */,
 				F12479E028213A7300D4325C /* MainRouter.swift in Sources */,
 				F17C42E7288FC1B000626994 /* SquareProductsCollectionViewCell.swift in Sources */,
 				F12479DE28213A6800D4325C /* MainEntity.swift in Sources */,
 				F12479FA28213B2000D4325C /* FavoritePresenter.swift in Sources */,
 				F12479F828213B1400D4325C /* FavoriteInteractor.swift in Sources */,
+				F121903E28911F8B008CA55D /* CartTVC.swift in Sources */,
 				F12479FE28213B3700D4325C /* FavoriteRouter.swift in Sources */,
+				F121903A28911C03008CA55D /* CartRouter.swift in Sources */,
 				F18BD30A28900743009E0680 /* String.swift in Sources */,
 				F1247A142821579900D4325C /* InformationTableViewCell.swift in Sources */,
 				F17C42EE288FC1F000626994 /* ProductsTableViewCell.swift in Sources */,
@@ -656,7 +698,9 @@
 				F12479F428213AFB00D4325C /* DetailsRouter.swift in Sources */,
 				F12479D828213A1200D4325C /* MainView.swift in Sources */,
 				F17C42E9288FC1B000626994 /* ProductsCollectionViewCell.swift in Sources */,
+				F121903628911BE9008CA55D /* CartPresenter.swift in Sources */,
 				F12479E228213A8600D4325C /* AuthenticationView.swift in Sources */,
+				F121903228911BC6008CA55D /* CartVC.swift in Sources */,
 				F12479E828213AB800D4325C /* AuthenticationEntity.swift in Sources */,
 				F12479E428213A9300D4325C /* AuthenticationInteractor.swift in Sources */,
 				F10B5997282BE2A200EC86A3 /* RealmService.swift in Sources */,

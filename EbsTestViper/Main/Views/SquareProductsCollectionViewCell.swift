@@ -32,9 +32,11 @@ class SquareProductsCollectionViewCell: UICollectionViewCell {
         if self.favButton.isSelected == false {
             self.favButton.isSelected = true
             self.favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
+            self.favButton.layer.cornerRadius = self.favButton.frame.height / 2
         } else {
             self.favButton.isSelected = false
             self.favButton.backgroundColor = .white
+            self.favButton.layer.cornerRadius = self.favButton.frame.height / 2
         }
     }
     
@@ -50,9 +52,11 @@ class SquareProductsCollectionViewCell: UICollectionViewCell {
         if isFavorite {
             self.favButton.isSelected = true
             self.favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
+            self.favButton.layer.cornerRadius = self.favButton.frame.height / 2
         } else {
             self.favButton.isSelected = false
             self.favButton.backgroundColor = .white
+            self.favButton.layer.cornerRadius = self.favButton.frame.height / 2
         }
     }
     
