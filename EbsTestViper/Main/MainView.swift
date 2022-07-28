@@ -59,6 +59,7 @@ class MainViewController: BaseViewController, MainViewProtocol {
         super.viewDidLoad()
         
         cartList = self.realm?.objects(Product.self)
+        
         configureUI()
         setupNavigationBar()
         presenter?.startFetchingProducts()
@@ -124,11 +125,7 @@ class MainViewController: BaseViewController, MainViewProtocol {
     }
     
     public func failedToFetchProducts() {
-        
-        let alert = UIAlertController(title: "error", message: "Failed to get products", preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
-        alert.addAction(cancel)
-        self.present(alert, animated: true)
+        showAlert(title: "Error", body: "Failed to fetch products")
     }
     
     @objc private func navigationToFavoriteScreen() {
@@ -138,7 +135,7 @@ class MainViewController: BaseViewController, MainViewProtocol {
     
     @objc private func navigationToAuthentiocationScreen() {
         guard let navigationController = navigationController else { return }
-        presenter?.pushAuthentiocationViewController(navigationController: navigationController)
+        presenter?.pushAuthenticationViewController(navigationController: navigationController)
     }
     
     @objc private func pullUpRefreshControl(_ sender: UIRefreshControl) {
@@ -184,16 +181,20 @@ extension MainViewController: UICollectionViewDataSource {
             
             let product = products[indexPath.row]
             
-            cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product, realm: RealmService.shared.realm))
+            cell.configure(with: product,
+                           isFavorite: RealmService.shared.checkRealmElements(products: product, realm: RealmService.shared.realm),
+                           isAddedToCart: RealmService.shared.checkRealmElements(products: product, realm: RealmService.shared.cartRealm))
             
             self.presenter?.cacheImage(cell.productImageView)
             
             cell.addToFavoriteProduct = { [weak self] (id) in
-                self?.presenter?.toggleFavorite(id: id)
+                guard let self = self else { return }
+                self.presenter?.toggleFavorite(id: id)
             }
             
             cell.addToCartProduct = { [weak self] (id) in
-                self?.presenter?.toggleCart(id: id)
+                guard let self = self else { return }
+                self.presenter?.toggleCart(id: id)
             }
             return cell
             
@@ -207,8 +208,15 @@ extension MainViewController: UICollectionViewDataSource {
             self.presenter?.cacheImage(cell.productImageView)
             
             cell.addToFavoriteProduct = { [weak self] (id) in
-                self?.presenter?.toggleFavorite(id: id)
+                guard let self = self else { return }
+                self.presenter?.toggleFavorite(id: id)
             }
+            
+            cell.addProductToCart = { [weak self] (id) in
+                guard let self = self else { return }
+                self.presenter?.toggleCart(id: id)
+            }
+            
             return cell
         }
     }
@@ -228,7 +236,6 @@ extension MainViewController: UICollectionViewDelegate {
         if indexPath.row == lastProduct && !isFetchingData && hasNoMorePages {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                
                 self.isFetchingData = true
                 self.presenter?.startFetchingProducts()
             }
@@ -256,7 +263,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         case .vertical:
             
             width = (view.frame.width / 2) - 20
-            height = 255
+            height = 265
             
             return CGSize(width: width, height: height)
         }

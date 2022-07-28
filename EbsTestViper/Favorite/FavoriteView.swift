@@ -15,17 +15,19 @@ protocol FavoriteViewProtocol {
 
 class FavoriteView: BaseViewController, FavoriteViewProtocol {
     
-    let realm = try? Realm(configuration: RealmService.shared.favoriteDataConfiguration(with: "favorite.realm"))
-    var presenter: FavoritePresenterProtocol?
-    var favoriteList: Results<Product>!
-    var notificationToken: NotificationToken?
+    // MARK: - UIElements
+    @IBOutlet private weak var favoriteProductsTableView: UITableView!
+    @IBOutlet private weak var favoriteProductsCount: UILabel!
+    @IBOutlet private weak var favoriteLabel: UILabel!
+    @IBOutlet private weak var sortByLabel: UILabel!
     
-    // UIElements
-    @IBOutlet weak var favoriteProductsTableView: UITableView!
-    @IBOutlet weak var favoriteProductsCount: UILabel!
-    @IBOutlet weak var favoriteLabel: UILabel!
+    // MARK: - Variables
+    public var presenter: FavoritePresenterProtocol?
+    private let realm = try? Realm(configuration: RealmService.shared.favoriteDataConfiguration(with: "favorite.realm"))
+    private var favoriteList: Results<Product>!
+    private var notificationToken: NotificationToken?
     
-    @IBOutlet weak var sortByLabel: UILabel!
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,14 +38,15 @@ class FavoriteView: BaseViewController, FavoriteViewProtocol {
         
         configureUI()
         configureTableView()
-        print("""
-                \(realm?.configuration.fileURL)
-              """)
+
         notificationToken = favoriteList.observe({ [weak self] changes in
             guard let tableView = self?.favoriteProductsTableView else { return }
+            
             switch changes {
+            
             case .initial:
                 tableView.reloadData()
+            
             case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
                 tableView.performBatchUpdates {
                     tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }), with: .automatic)
@@ -55,6 +58,8 @@ class FavoriteView: BaseViewController, FavoriteViewProtocol {
         })
         favoriteProductsTableView.reloadData()
     }
+    
+    // MARK: - Functions
     
     private func configureUI() {
         favoriteLabel.text = "FAVORITES".localized()
@@ -93,8 +98,8 @@ extension FavoriteView: UITableViewDataSource {
         }
         
         let product = favoriteList[indexPath.row]
-        cell.id = product.id
         
+        cell.id = product.id
         cell.configure(with: product, isFavorite: RealmService.shared.checkRealmElements(products: product, realm: RealmService.shared.realm))
         
         cell.addToFavoriteProduct = { [weak self] (id) in

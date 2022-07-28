@@ -65,33 +65,22 @@
                             </label>
                         </subviews>
                     </stackView>
-                    <stackView opaque="NO" contentMode="scaleToFill" spacing="72" translatesAutoresizingMaskIntoConstraints="NO" id="THM-5a-1gk">
-                        <rect key="frame" x="10" y="217.5" width="134" height="31"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="THM-5a-1gk">
+                        <rect key="frame" x="10" y="217.5" width="90" height="35"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hLL-PS-2Y7">
-                                <rect key="frame" x="0.0" y="0.0" width="31" height="31"/>
+                                <rect key="frame" x="0.0" y="0.0" width="35" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="31" id="6n3-1Z-Drs"/>
+                                    <constraint firstAttribute="width" constant="35" id="6n3-1Z-Drs"/>
+                                    <constraint firstAttribute="height" constant="35" id="ZOa-hF-CnA"/>
                                 </constraints>
                                 <color key="tintColor" systemColor="systemRedColor"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="heart" catalog="system"/>
-                                <state key="selected" image="heart.fill" catalog="system">
+                                <state key="normal" image="heart.empty"/>
+                                <state key="selected" image="heart.fill">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
-                                <connections>
-                                    <action selector="favButtonTap:" destination="gTV-IL-0wX" eventType="touchUpInside" id="aD3-zF-sD9"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K2Q-7z-5Ze">
-                                <rect key="frame" x="103" y="0.0" width="31" height="31"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="31" id="FPd-2w-RAd"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="cart" catalog="system">
-                                    <color key="baseForegroundColor" red="0.094117647060000004" green="0.15686274510000001" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </buttonConfiguration>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <real key="value" value="18"/>
@@ -106,9 +95,42 @@
                                         <size key="value" width="1" height="1"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                        <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="favButtonTap:" destination="gTV-IL-0wX" eventType="touchUpInside" id="aD3-zF-sD9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qSD-qi-vwI">
+                                <rect key="frame" x="55" y="0.0" width="35" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="unR-Mv-QKH"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="emptyCart"/>
+                                <state key="selected" image="fillCart"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="18"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                        <size key="value" width="1" height="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="cartAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="kdH-po-lPp"/>
+                                </connections>
                             </button>
                         </subviews>
                     </stackView>
@@ -131,7 +153,7 @@
             </constraints>
             <size key="customSize" width="394" height="628"/>
             <connections>
-                <outlet property="cartButton" destination="K2Q-7z-5Ze" id="ovu-ng-niF"/>
+                <outlet property="cartButton" destination="qSD-qi-vwI" id="E6d-Ij-Pdz"/>
                 <outlet property="favButton" destination="hLL-PS-2Y7" id="bsJ-S9-jm2"/>
                 <outlet property="productDetails" destination="mE3-QW-SDU" id="YPv-Q0-ofb"/>
                 <outlet property="productImageView" destination="9Dm-cX-ZQd" id="PXt-KC-sP1"/>
@@ -143,9 +165,10 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="cart" catalog="system" width="128" height="102"/>
-        <image name="heart" catalog="system" width="128" height="109"/>
-        <image name="heart.fill" catalog="system" width="128" height="109"/>
+        <image name="emptyCart" width="18" height="20"/>
+        <image name="fillCart" width="18" height="20"/>
+        <image name="heart.empty" width="20" height="18"/>
+        <image name="heart.fill" width="20" height="18"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

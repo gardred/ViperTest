@@ -14,7 +14,7 @@ protocol MainRouterProtocol {
     static func start() -> MainViewController
     func pushDetailsScreen(navigationController: UINavigationController, productId: Int)
     func pushFavoriteScreen(navigationController: UINavigationController)
-    func pushAuthentiocationScreen(navigationController: UINavigationController)
+    func pushAuthenticationScreen(navigationController: UINavigationController)
     func pushCartScreen(navigationController: UINavigationController)
 }
 
@@ -26,7 +26,7 @@ class MainRouter: MainRouterProtocol {
         navigationController.pushViewController(cart, animated: true)
     }
     
-    public func pushAuthentiocationScreen(navigationController: UINavigationController) {
+    public func pushAuthenticationScreen(navigationController: UINavigationController) {
         let router = AuthentiocationRouter.self
         let authentication = router.createAuthentiocationModule()
         navigationController.pushViewController(authentication, animated: true)

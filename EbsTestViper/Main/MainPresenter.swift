@@ -8,10 +8,9 @@
 import Foundation
 import UIKit
 import Network
-// View <------> PRESENTER ------> Router
-//               PRESENTER <-----> Interactor
 
 protocol MainPresenterProtocol {
+    
     var view: MainViewProtocol? { get set}
     var router: MainRouterProtocol? { get set }
     var interactor: MainInteractorProtocol? { get set}
@@ -27,14 +26,12 @@ protocol MainPresenterProtocol {
     
     func pushDetailsViewController(navigationController: UINavigationController, productId: Int)
     func pushFavoriteViewController(navigationController: UINavigationController)
-    func pushAuthentiocationViewController(navigationController: UINavigationController)
+    func pushAuthenticationViewController(navigationController: UINavigationController)
     func pushCartViewController(navigationController: UINavigationController)
 }
 
 class MainPresenter: MainPresenterProtocol {
   
-    
-   
     // MARK: - Variables
     
     private let monitor = NWPathMonitor()
@@ -104,8 +101,8 @@ class MainPresenter: MainPresenterProtocol {
         router?.pushFavoriteScreen(navigationController: navigationController)
     }
     
-    public func pushAuthentiocationViewController(navigationController: UINavigationController) {
-        router?.pushAuthentiocationScreen(navigationController: navigationController)
+    public func pushAuthenticationViewController(navigationController: UINavigationController) {
+        router?.pushAuthenticationScreen(navigationController: navigationController)
     }
     
     public func pushDetailsViewController(navigationController: UINavigationController, productId: Int) {

@@ -18,17 +18,48 @@ class CartTVC: UITableViewCell {
     @IBOutlet private weak var productSalePrice: UILabel!
     @IBOutlet public weak var numberOfProducts: UILabel!
     
+    @IBOutlet private weak var deleteButton: UIButton!
+    @IBOutlet private weak var addProduct: UIButton!
+    @IBOutlet private weak var deleteProduct: UIButton!
+    
+    private var numberOfProductsInCart = 1
+    public var id = 0
+    
+    public var removeFromCartProduct: ( (_ id: Int) -> Void) = { _ in}
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        selectionStyle = .none
+        deleteButton.layer.cornerRadius = deleteButton.frame.height / 2
+    }
+    
+    @IBAction func deleteProductAction(_ sender: UIButton) {
+        removeFromCartProduct(id)
+    }
+    
+    @IBAction func addProductAction(_ sender: UIButton) {
+        
+        numberOfProductsInCart += 1
+        numberOfProducts.text = "\(numberOfProductsInCart)"
+    }
+    
+    @IBAction func removeProductAction(_ sender: UIButton) {
+        
+        if numberOfProductsInCart > 1 {
+            numberOfProductsInCart -= 1
+            numberOfProducts.text = "\(numberOfProductsInCart)"
+        } else {
+            removeFromCartProduct(id)
+        }
     }
     
     public func configure(with model: Product) {
-        self.productName.text = model.name
-        self.productDetails.text = model.details
-        self.productPrice.text = "$\(model.price)"
-        self.productSalePrice.text = "$\(model.price)"
-        self.productImage.sd_setImage(with: URL(string: model.main_image))
-        
+        productName.text = model.name
+        productDetails.text = model.details
+        productPrice.text = "$\(model.price)"
+        productSalePrice.text = "$\(model.price)"
+        productImage.sd_setImage(with: URL(string: model.main_image))
+        numberOfProducts.text = "\(numberOfProductsInCart)"
     }
 }

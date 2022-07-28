@@ -10,8 +10,7 @@ import SDWebImage
 
 class ProductsCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "ProductsCollectionViewCell"
-    
+    // MARK: - UIElements
     @IBOutlet public weak var productImageView: UIImageView!
     @IBOutlet private weak var productName: UILabel!
     @IBOutlet private weak var productDetails: UILabel!
@@ -20,57 +19,55 @@ class ProductsCollectionViewCell: UICollectionViewCell {
     @IBOutlet private weak var favButton: UIButton!
     @IBOutlet private weak var cartButton: UIButton!
     
+    // MARK: - Variables
+    static let identifier = "ProductsCollectionViewCell"
+    
     public var addToFavoriteProduct: ((_ id: Int) -> Void) = { _ in }
     public var addToCartProduct: ((_ id: Int) -> Void) = { _ in }
-    
     public var id: Int = 0
     
+    // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
         
     }
     
+    // MARK: - IBActions
     @IBAction func markAsFavorite(_ sender: UIButton) {
         
         self.addToFavoriteProduct(self.id)
-        
-        if self.favButton.isSelected == false {
-            self.favButton.isSelected = true
-            self.favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
-        } else {
-            self.favButton.isSelected = false
-            self.favButton.backgroundColor = .white
-        }
+        configureButton(button: favButton, color: "#FAF0D8")
     }
     
     @IBAction func addToCart(_ sender: UIButton) {
         
         self.addToCartProduct(self.id)
+        configureButton(button: cartButton, color: "#07195C")
+    }
+    
+    private func toggleButton(button: UIButton, color: String, state: Bool) {
         
-        if self.cartButton.isSelected == false {
-            self.cartButton.isSelected = true
-            self.cartButton.backgroundColor = hexStringToUIColor(hex: "#07195C")
+        if state {
+            button.isSelected = true
+            button.backgroundColor = hexStringToUIColor(hex: color)
         } else {
-            self.cartButton.isSelected = false
-            self.cartButton.backgroundColor = .white
+            button.isSelected = false
+            button.backgroundColor = .white
         }
     }
     
-    public func configure(with model: Product, isFavorite: Bool) {
-        self.id = model.id
-        self.productName.text = model.name
-        self.productDetails.text = model.details
-        self.productPrice.text = "$\(model.price)"
-        self.productSalePrice.text = "$\(model.price)"
-        self.productImageView.sd_setImage(with: URL(string: model.main_image))
+    // MARK: - Functions 
+    public func configure(with model: Product, isFavorite: Bool, isAddedToCart: Bool) {
         
-        if isFavorite {
-            self.favButton.isSelected = true
-            self.favButton.backgroundColor = hexStringToUIColor(hex: "#FAF0D8")
-        } else {
-            self.favButton.isSelected = false
-            self.favButton.backgroundColor = .white
-        }
+        id = model.id
+        productName.text = model.name
+        productDetails.text = model.details
+        productPrice.text = "$\(model.price)"
+        productSalePrice.text = "$\(model.price)"
+        productImageView.sd_setImage(with: URL(string: model.main_image))
+        
+        toggleButton(button: favButton, color: "#FAF0D8", state: isFavorite)
+        toggleButton(button: cartButton, color: "#07195C", state: isAddedToCart)
     }
     
     static func nib() -> UINib {

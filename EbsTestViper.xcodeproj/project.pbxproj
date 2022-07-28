@@ -99,6 +99,8 @@
 		F1AC49EC2825401900D22962 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1AC49EB2825401900D22962 /* credentials.plist */; };
 		F1AC49EE28255DF400D22962 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC49ED28255DF400D22962 /* BaseViewController.swift */; };
 		F1AC49F02825658100D22962 /* HexColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC49EF2825658100D22962 /* HexColorExtension.swift */; };
+		F1DDCB4228927E3F007930CD /* UICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DDCB4128927E3F007930CD /* UICollectionViewCell.swift */; };
+		F1DDCB4428928216007930CD /* UIAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DDCB4328928216007930CD /* UIAlert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -200,6 +202,8 @@
 		F1AC49EB2825401900D22962 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 		F1AC49ED28255DF400D22962 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		F1AC49EF2825658100D22962 /* HexColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColorExtension.swift; sourceTree = "<group>"; };
+		F1DDCB4128927E3F007930CD /* UICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCell.swift; sourceTree = "<group>"; };
+		F1DDCB4328928216007930CD /* UIAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlert.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +242,8 @@
 				F1AC49EF2825658100D22962 /* HexColorExtension.swift */,
 				F16723302822AB9600ADFBB7 /* CornerRadiusExtension.swift */,
 				F18BD30928900743009E0680 /* String.swift */,
+				F1DDCB4128927E3F007930CD /* UICollectionViewCell.swift */,
+				F1DDCB4328928216007930CD /* UIAlert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -304,7 +310,6 @@
 		F12479BD2821395000D4325C /* EbsTestViper */ = {
 			isa = PBXGroup;
 			children = (
-				F121903028911BAA008CA55D /* Cart */,
 				F12479CC2821395500D4325C /* Info.plist */,
 				F12479C42821395000D4325C /* Main.storyboard */,
 				F12479C92821395500D4325C /* LaunchScreen.storyboard */,
@@ -313,6 +318,7 @@
 				F16722DA2822559D00ADFBB7 /* Fonts */,
 				F12479D4282139DC00D4325C /* Authentication */,
 				F12479D6282139EF00D4325C /* Favorite */,
+				F121903028911BAA008CA55D /* Cart */,
 				F12479D5282139E500D4325C /* Details */,
 				F12479D3282139D500D4325C /* Main */,
 				F10B5996282BE2A200EC86A3 /* RealmService.swift */,
@@ -677,6 +683,7 @@
 			files = (
 				F12479EA28213AC300D4325C /* AuthenticationRouter.swift in Sources */,
 				F121903828911BF9008CA55D /* CartEntity.swift in Sources */,
+				F1DDCB4228927E3F007930CD /* UICollectionViewCell.swift in Sources */,
 				F1AC49F02825658100D22962 /* HexColorExtension.swift in Sources */,
 				F1247A0C2821576400D4325C /* ProductImageTableViewCell.swift in Sources */,
 				F12479EC28213ACF00D4325C /* DetailsView.swift in Sources */,
@@ -694,6 +701,7 @@
 				F18BD30A28900743009E0680 /* String.swift in Sources */,
 				F1247A142821579900D4325C /* InformationTableViewCell.swift in Sources */,
 				F17C42EE288FC1F000626994 /* ProductsTableViewCell.swift in Sources */,
+				F1DDCB4428928216007930CD /* UIAlert.swift in Sources */,
 				F12479DC28213A3E00D4325C /* MainPresenter.swift in Sources */,
 				F12479F428213AFB00D4325C /* DetailsRouter.swift in Sources */,
 				F12479D828213A1200D4325C /* MainView.swift in Sources */,
