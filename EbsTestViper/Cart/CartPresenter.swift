@@ -24,7 +24,6 @@ class CartPresenter: CartPresenterProtocol {
 
     var id: Int = 0
     
-    
     var view: CartViewProtocol?
     
     var router: CartRouterProtocol?

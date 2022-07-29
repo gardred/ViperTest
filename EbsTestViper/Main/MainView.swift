@@ -55,6 +55,11 @@ class MainViewController: BaseViewController, MainViewProtocol {
     private let realm = try? Realm(configuration: RealmService.shared.favoriteDataConfiguration(with: "cart.realm"))
     // MARK: - Lifecycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        productsCollectionView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -78,7 +83,7 @@ class MainViewController: BaseViewController, MainViewProtocol {
     }
     
     private func configureUI() {
-        cartCountLabel.text = "\(cartList.count)"
+        cartCountLabel.text = String(cartList.count)
         cartButton.setTitle("MY CART".localized(), for: .normal)
         filterButton.setTitle("FILTER".localized(), for: .normal)
     }
@@ -189,12 +194,13 @@ extension MainViewController: UICollectionViewDataSource {
             
             cell.addToFavoriteProduct = { [weak self] (id) in
                 guard let self = self else { return }
-                self.presenter?.toggleFavorite(id: id)
+                self.presenter?.toggleProductState(id: id, realm: RealmService.shared.realm)
             }
             
             cell.addToCartProduct = { [weak self] (id) in
                 guard let self = self else { return }
-                self.presenter?.toggleCart(id: id)
+                self.cartCountLabel.text = String(self.cartList.count)
+                self.presenter?.toggleProductState(id: id, realm: RealmService.shared.cartRealm)
             }
             return cell
             
@@ -209,12 +215,12 @@ extension MainViewController: UICollectionViewDataSource {
             
             cell.addToFavoriteProduct = { [weak self] (id) in
                 guard let self = self else { return }
-                self.presenter?.toggleFavorite(id: id)
+                self.presenter?.toggleProductState(id: id, realm: RealmService.shared.realm)
             }
             
             cell.addProductToCart = { [weak self] (id) in
                 guard let self = self else { return }
-                self.presenter?.toggleCart(id: id)
+                self.presenter?.toggleProductState(id: id, realm: RealmService.shared.cartRealm)
             }
             
             return cell
@@ -235,9 +241,9 @@ extension MainViewController: UICollectionViewDelegate {
         let lastProduct = products.count - 1
         if indexPath.row == lastProduct && !isFetchingData && hasNoMorePages {
             DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.isFetchingData = true
-                self.presenter?.startFetchingProducts()
+//                guard let self = self else { return }
+                self?.isFetchingData = true
+                self?.presenter?.startFetchingProducts()
             }
         }
     }

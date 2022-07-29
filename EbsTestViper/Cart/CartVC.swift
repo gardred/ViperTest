@@ -17,10 +17,17 @@ class CartVC: BaseViewController, CartViewProtocol {
     // MARK: - UIElements
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var cartCount: UILabel!
+    @IBOutlet weak var cartLabel: UILabel!
+    @IBOutlet weak var sortByLabel: UILabel!
     
+    @IBOutlet weak var detailsLabel: UILabel!
+    @IBOutlet weak var productsLabel: UILabel!
+    @IBOutlet weak var deliveryLabel: UILabel!
     @IBOutlet weak var productsPrice: UILabel!
+    @IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var totalPrice: UILabel!
     @IBOutlet weak var deliveryPrice: UILabel!
+    @IBOutlet weak var checkoutButton: UIButton!
     
     // MARK: - Variables
     public var presenter: CartPresenterProtocol?
@@ -34,6 +41,7 @@ class CartVC: BaseViewController, CartViewProtocol {
     private var totalCost: Int?
     
     // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,13 +50,12 @@ class CartVC: BaseViewController, CartViewProtocol {
         setupNavigationBar()
         configureTableView()
         updateTableView()
-        
-        
     }
     
     // MARK: - Functions
     
     private func updateTableView() {
+        
         notificationToken = cartList.observe({ [weak self] (changes) in
             guard let self = self else { return }
             guard let tableView = self.tableView else { return }
@@ -77,6 +84,14 @@ class CartVC: BaseViewController, CartViewProtocol {
     
     private func configureUI() {
         
+        cartLabel.text = "CART".localized()
+        sortByLabel.text = "SORT BY".localized()
+        detailsLabel.text = "DETAILS".localized()
+        productsLabel.text = "Products".localized()
+        deliveryLabel.text = "Delivery".localized()
+        totalLabel.text = "Total".localized()
+        checkoutButton.setTitle("CHECKOUT".localized(), for: .normal)
+        
         cartCount.text = String(cartList.count)
         cartCount.layer.cornerRadius = cartCount.frame.height / 2
         
@@ -93,9 +108,10 @@ class CartVC: BaseViewController, CartViewProtocol {
         
         tableView.register(UINib(nibName: "CartTVC", bundle: nil), forCellReuseIdentifier: CartTVC.identifier)
         tableView.dataSource = self
-        
     }
 }
+
+    // MARK: - UITableView Data Source
 
 extension CartVC: UITableViewDataSource {
     
@@ -119,7 +135,10 @@ extension CartVC: UITableViewDataSource {
     }
 }
 
+    // MARK: - UITableView Delegate
+
 extension CartVC: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 192
     }

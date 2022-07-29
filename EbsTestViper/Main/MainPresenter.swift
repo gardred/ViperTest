@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Network
+import RealmSwift
 
 protocol MainPresenterProtocol {
     
@@ -21,8 +22,7 @@ protocol MainPresenterProtocol {
     func startFetchingProducts()
     func fetchProductsSuccess(products: [Product])
     func cacheImage(_ imageView: UIImageView)
-    func toggleFavorite(id: Int)
-    func toggleCart(id: Int)
+    func toggleProductState(id: Int, realm: Realm)
     
     func pushDetailsViewController(navigationController: UINavigationController, productId: Int)
     func pushFavoriteViewController(navigationController: UINavigationController)
@@ -74,22 +74,13 @@ class MainPresenter: MainPresenterProtocol {
         })
     }
     
-    public func toggleFavorite(id: Int) {
+    public func toggleProductState(id: Int, realm: Realm) {
        
-        if let product = RealmService.shared.findProduct(id: id, realm: RealmService.shared.realm) {
-            RealmService.shared.removeProduct(productToDelete: product, realm: RealmService.shared.realm)
+        if let product = RealmService.shared.findProduct(id: id, realm: realm) {
+            RealmService.shared.removeProduct(productToDelete: product, realm: realm)
         } else {
             guard let product = products.first(where: { $0.id == id }) else { return }
-            RealmService.shared.addProduct(with: product, realm: RealmService.shared.realm)
-        }
-    }
-    
-    func toggleCart(id: Int) {
-        if let product = RealmService.shared.findProduct(id: id, realm: RealmService.shared.cartRealm) {
-            RealmService.shared.removeProduct(productToDelete: product, realm: RealmService.shared.cartRealm)
-        } else {
-            guard let product = products.first(where: { $0.id == id }) else { return }
-            RealmService.shared.addProduct(with: product, realm: RealmService.shared.cartRealm)
+            RealmService.shared.addProduct(with: product, realm: realm)
         }
     }
 
